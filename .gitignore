@@ -1,0 +1,29 @@
+obj/
+bin/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.user
+*.ncrunchproject
+*.ncrunchsolution
+*.crunchsolution.cache
+nCrunchTemp*
+
+**/Properties/launchSettings.json
+
+# Visual Studio Code
+.vscode
+
+# Visual Studio
+.vs/
+
+publish/
+*.nupkg
+
+# web
+node_modules
+dist
+npm-debug.log
