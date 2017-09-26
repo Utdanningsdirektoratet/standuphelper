@@ -6,6 +6,8 @@ using System.Net.Http.Formatting;
 using StandupHelper.Config;
 using StandupHelper.Utils;
 using System.Net.Http;
+using StandupHelper.Models.Jira;
+using StandupHelper.Models.Response;
 
 namespace StandupHelper.Controllers
 {
@@ -22,62 +24,40 @@ namespace StandupHelper.Controllers
         public async Task<IActionResult> Index()
         {            
             var board = await GetBoard();
-            return View();
+            return View(board);
         }
 
-        private async Task<IEnumerable<ColumnModel>> GetBoard()
+        private async Task<BoardResponseModel> GetBoard()
         {
             using(var client = _httpClientUtils.GetClient())
             {
-                var inprogress = await client.GetAsync("https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='In Progress'");
-                var column = await inprogress.Content.ReadAsAsync<ColumnModel>();
-
-                return new[] { column };
+                var response = await client.GetAsync("https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='In Progress'");
+                var inProgress = await GetColumn(client, "In Progress");
+                var peerReview = await GetColumn(client, "Peer Review");
+                var test = await GetColumn(client, "System Test");
+                var merge = await GetMergeColumn(client);
+                return new BoardResponseModel
+                {
+                    InProgress = inProgress,
+                    PeerReview = peerReview,
+                    Test = test,
+                    Merge = merge
+                };
             }
         }
-    }
 
-    public class ColumnModel 
-    {
-        public IEnumerable<IssueModel> Issues { get; set; }
-        public int Total { get; set; }
-    }
+        private async Task<ColumnResponseModel> GetColumn(HttpClient client, string column)
+        {
+            var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='{column}'");
+            var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
+            return new ColumnResponseModel(columnModel);
+        }
 
-    public class IssueModel
-    {
-        public string Id { get; set; }
-        public string Self { get; set; }
-        public string Key { get; set; }
-        public FieldsModel Fields { get; set; }
-
-    }
-
-    public class FieldsModel
-    {
-        public IssuetypeModel Issuetype { get; set; }
-        public AssigneeModel Assignee { get; set; }
-
-        public StatusModel Status { get; set; }
-
-        public string Summary { get; set; }
-
-    }
-
-    public class IssuetypeModel
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class AssigneeModel
-    {
-        public string Name { get; set; }
-        public Dictionary<string, string> AvatarUrls { get; set; }
-    }
-
-    public class StatusModel
-    {
-        public string Id  { get; set; }
-        public string Name { get; set; }
+        private async Task<ColumnResponseModel> GetMergeColumn(HttpClient client)
+        {
+            var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='Done' AND (fixVersion in unreleasedVersions() OR fixVersion is EMPTY )");
+            var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
+            return new ColumnResponseModel(columnModel);
+        }
     }
 }
