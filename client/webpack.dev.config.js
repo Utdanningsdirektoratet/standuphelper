@@ -19,15 +19,7 @@ module.exports = new Config()
         ie: 'component-ie'
       }
     },
-    entry: [
-      'babel-polyfill',
-      'whatwg-fetch',
-      'url-search-params',
-      'webpack-dev-server/client?http://localhost:3000',
-      'webpack/hot/only-dev-server',
-      'react-hot-loader/patch',
-      './index.js'
-    ],
+    entry: ['webpack-dev-server/client?http://localhost:3000', './index.js'],
     output: {
       path: path.join(__dirname, 'dist'),
       filename: 'bundle.js',

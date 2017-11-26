@@ -38,7 +38,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "dependencies": {
-    "@udir/udir-react-components": "^25.0.2",
+    "@udir/udir-react-components": "^28.1.6",
     "classnames": "^2.2.5",
     "date-fns": "^1.28.5",
     "js-cookie": "^2.1.4",

@@ -8,6 +8,7 @@ using StandupHelper.Utils;
 using System.Net.Http;
 using StandupHelper.Models.Jira;
 using StandupHelper.Models.Response;
+using standuphelper.Models;
 
 namespace StandupHelper.Controllers
 {
@@ -24,14 +25,13 @@ namespace StandupHelper.Controllers
         public async Task<IActionResult> Index()
         {            
             var board = await GetBoard();
-            return View(board);
+            return View(new PreloadViewModel(board));
         }
 
         private async Task<BoardResponseModel> GetBoard()
         {
             using(var client = _httpClientUtils.GetClient())
             {
-                var response = await client.GetAsync("https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='In Progress'");
                 var inProgress = await GetColumn(client, "In Progress");
                 var peerReview = await GetColumn(client, "Peer Review");
                 var test = await GetColumn(client, "System Test");

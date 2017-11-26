@@ -15,12 +15,7 @@ module.exports = new Config()
       ],
       extensions: ['.js', '.jsx', '.less']
     },
-    entry: [
-      'babel-polyfill',
-      'whatwg-fetch',
-      'url-search-params',
-      './index.js'
-    ],
+    entry: ['./index.js'],
     output: {
       path: path.join(__dirname, '../wwwroot/dist'),
       filename: 'bundle-[hash].js',
