@@ -8,11 +8,11 @@ import classnames from 'classnames';
 import { issue as issuePropType } from 'proptypes';
 
 const mapLabels = (issue) => {
-  return issue.labels.map(l => <Badge className="u--marginRight1" key={`label-${issue.id}-${l}`} value={l} wide />);
+  return issue.labels.map(l => <Badge className="u--marginRight1 Badge--darkgrey" key={`label-${issue.id}-${l}`} value={l} wide />);
 };
 
 const mapFixVersions = (issue) => {
-  return issue.unReleasedFixVersions.map(v => <Badge className="u--marginRight1 Badge--white" key={`label-${issue.id}-${v}`} value={v} wide />);
+  return issue.unReleasedFixVersions.map(v => <Badge className="u--marginRight1 Badge--darkgrey" key={`label-${issue.id}-${v}`} value={v} wide />);
 };
 
 const Issue = ({ issue, visible }) => {
