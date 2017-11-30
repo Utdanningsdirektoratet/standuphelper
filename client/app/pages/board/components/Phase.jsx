@@ -1,3 +1,5 @@
+import 'less/phase.less';
+
 import React from 'react';
 import { phase as phasePropType } from 'proptypes';
 import { ARROWUP, ARROWDOWN } from 'utils/constants';
@@ -58,8 +60,8 @@ class Phase extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1 className="u--h1">{this.props.phase.title}</h1>
+      <div className="Phase u--marginTop10">
+        <h1 className="u-title">{this.props.phase.title}</h1>
         <div>
           {this.mapIssues()}
         </div>

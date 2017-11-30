@@ -26,21 +26,24 @@ const Issue = ({ issue, visible }) => {
       <div>
         { issue.releasedFixVersions > 0 ? <Badge className="Badge--topright Badge--blue" value={issue.releasedFixVersions} /> : null}
         <header className="Grid">
-          <div className="Grid-24-25">
-            <h2 className="u--h2">
+          <div className="Grid-23-25">
+            <h1 className="u-h1 u--ellipsis">
               {issue.name} - {issue.title}
-            </h2>
+            </h1>
           </div>
-          <div className="Grid-1-25">
+          <div className="Grid-1-25 Grid--offset-1-25">
             <img src={issue.avatar} alt={issue.assignee} />
           </div>
         </header>
         <div>
           <div className="Issue-description u--ellipsis">
-            <p dangerouslySetInnerHTML={{ __html: issue.description }}></p>
+            {issue.description
+              ? <p dangerouslySetInnerHTML={{ __html: issue.description }}></p> 
+              : <p>Nothing to see here!</p>
+            }
           </div>
         </div>
-        <footer className="u--marginTop1">
+        <footer className="u--marginTop2">
           <div>
             {mapLabels(issue)}
           </div>

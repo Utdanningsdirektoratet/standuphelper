@@ -1,3 +1,5 @@
+import 'less/shared.less';
+
 import React from 'react';
 
 export default props => (ComposedComponent) => {
