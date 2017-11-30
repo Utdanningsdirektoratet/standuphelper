@@ -6,11 +6,16 @@ export const issue = PropTypes.shape({
   description: PropTypes.string,
   name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  labels: PropTypes.arrayOf(PropTypes.string),
+  unReleasedFixVersions: PropTypes.arrayOf(PropTypes.string),
+  releasedFixVersions: PropTypes.number.isRequired,
   type: PropTypes.oneOf(['Story', 'Bug', 'Task']).isRequired,
+  color: PropTypes.string.isRequired,
   url: PropTypes.string
 });
 
 export const phase = PropTypes.shape({
+  title: PropTypes.string.isRequired,
   issues: PropTypes.arrayOf(issue).isRequired
 });
 

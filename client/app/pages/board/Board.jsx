@@ -1,16 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
+import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT } from 'utils/constants';
 
 import Phase from './components/Phase';
-
-const INPROGRESS = 'In Progress';
-const PEERREVIEW = 'Peer Review';
-const SYSTEMTEST = 'System Test';
-const MERGE = 'Merge';
-
-const ARROWRIGHT = 39;
-const ARROWLEFT = 37;
 
 const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 
