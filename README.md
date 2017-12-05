@@ -35,3 +35,4 @@ netsh interface ipv4 set subinterface ethernet mtu=1350 store=persistent
 * Overblikk som første bilde (og så drille ned i faser)
 * Filtrere bort irrelevante stories. F.eks de med label Reviewed i Peer Review
 * Vise irrelevante stories som siste punkt i en fase (i småformat)
+* Replace `(/)` med `✔`, `(i)` med `ℹ`, `(x)` med `✘`
