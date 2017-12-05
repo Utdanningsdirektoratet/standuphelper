@@ -28,6 +28,7 @@ netsh interface ipv4 set subinterface ethernet mtu=1350 store=persistent
 
 ## Roadmap
 
+* Antall dager en oppgave har vært i kolonnen. Hent infoen fra Jira (som kompenserer for helger, o.l)
 * MVP (released): Vise stories en om gangen med pilnavigering. Enkel visning, med labels, fix-versions, tittel, beskrivelse og bilde
 * Fallback når bildet ikke finnes (vise brukernavn)
 * Kunne navigere med space (kun en vei)
