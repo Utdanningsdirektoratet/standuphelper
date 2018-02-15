@@ -10,9 +10,10 @@ const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 class Board extends React.Component {
   constructor() {
     super();
-
+    document.title = 'Staaaaaandup!';
     this.state = {
-      activePhase: MERGE
+      activePhase: MERGE,
+      activeIssueIndex: 0
     };
 
     this.eventListener = window.addEventListener('keydown', (e) => {
@@ -20,7 +21,7 @@ class Board extends React.Component {
       if (keyPressed !== ARROWLEFT && keyPressed !== ARROWRIGHT) {
         return;
       }
-      this.setState({ activePhase: this.getPhase(keyPressed) });
+      this.changePhase(this.getPhase(keyPressed));
     });
   }
 
@@ -61,11 +62,29 @@ class Board extends React.Component {
     }
   }
 
+  changeIssue = (newIndex) => {
+    this.setState(prevState => Object.assign({}, prevState, { activeIssueIndex: newIndex }));
+  }
+
+  changePhase = (nextPhase) => {
+    if (nextPhase) {
+      this.setState(prevState => Object.assign({}, prevState, { activePhase: nextPhase }));
+    } else if (this.state.activePhase !== INPROGRESS) {
+      this.changePhase(this.getPhase(ARROWLEFT)); // Go to next phase
+    }
+  }
+
   render() {
     return (
       <div className="Section u--paddingTop2">
         <div className="Section-content Grid">
-          <Phase phase={this.getActivePhase()} />
+          <Phase
+            phase={this.getActivePhase()}
+            changePhase={this.changePhase}
+            changeIssue={this.changeIssue}
+            getActivePhase={this.getActivePhase}
+            activeIssueIndex={this.state.activeIssueIndex}
+          />
         </div>
       </div>
     );

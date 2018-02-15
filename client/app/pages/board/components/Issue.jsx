@@ -38,7 +38,7 @@ const Issue = ({ issue, visible }) => {
         <div>
           <div className="Issue-description u--ellipsis">
             {issue.description
-              ? <p dangerouslySetInnerHTML={{ __html: issue.description }}></p> 
+              ? <p dangerouslySetInnerHTML={{ __html: issue.description }}></p>
               : <p>Nothing to see here!</p>
             }
           </div>

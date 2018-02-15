@@ -1,35 +1,38 @@
 import 'less/phase.less';
 
 import React from 'react';
+import Proptypes from 'prop-types';
 import { phase as phasePropType } from 'proptypes';
-import { ARROWUP, ARROWDOWN } from 'utils/constants';
+import { ARROWUP, ARROWDOWN, SPACE, INPROGRESS } from 'utils/constants';
 
 import Issue from './Issue';
 
 class Phase extends React.Component {
   static propTypes = {
-    phase: phasePropType.isRequired
+    phase: phasePropType.isRequired,
+    changeIssue: Proptypes.func.isRequired,
+    changePhase: Proptypes.func.isRequired,
+    getActivePhase: Proptypes.func.isRequired,
+    activeIssueIndex: Proptypes.number.isRequired
   }
 
-  constructor() {
+  constructor(props) {
     super();
-
-    this.state = {
-      activeIssueIndex: 0
-    };
 
     this.eventListener = window.addEventListener('keydown', (e) => {
       const keyPressed = e.keyCode;
-      if (keyPressed !== ARROWUP && keyPressed !== ARROWDOWN) {
+      if (keyPressed !== ARROWUP && keyPressed !== ARROWDOWN && keyPressed !== SPACE) {
         return;
       }
-      this.setState({ activeIssueIndex: this.getNextIndex(keyPressed) });
+      if (props.getActivePhase().title !== INPROGRESS) {
+        props.changeIssue(this.getNextIndex(keyPressed));
+      }
     });
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.phase !== this.props.phase) {
-      this.setState({ activeIssueIndex: 0 });
+      this.props.changeIssue(0);
     }
   }
 
@@ -38,12 +41,19 @@ class Phase extends React.Component {
   }
 
   getNextIndex = (keyPressed) => {
-    const { activeIssueIndex } = this.state;
+    const { activeIssueIndex } = this.props;
     const { issues } = this.props.phase;
+
+    if (keyPressed === SPACE && activeIssueIndex !== issues.length - 1) {
+      return activeIssueIndex + 1;
+    } else if (keyPressed === SPACE && activeIssueIndex === issues.length - 1) {
+      this.props.changePhase();
+      return 0;
+    }
 
     if ((activeIssueIndex === 0 && keyPressed === ARROWUP) ||
       (activeIssueIndex === issues.length - 1 && keyPressed === ARROWDOWN)) {
-      return activeIssueIndex; // TODO: naviger mellom phases
+      return activeIssueIndex;
     }
 
     return keyPressed === ARROWUP ? activeIssueIndex - 1 : activeIssueIndex + 1;
@@ -51,8 +61,8 @@ class Phase extends React.Component {
 
   mapIssues = () => {
     const { issues } = this.props.phase;
-    const { activeIssueIndex } = this.state;
-    
+    const { activeIssueIndex } = this.props;
+
     return issues.map((issue, i) => {
       return <Issue issue={issue} visible={activeIssueIndex === i} key={`issue-${issue.id}`} />;
     });
