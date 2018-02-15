@@ -12,7 +12,7 @@ class Phase extends React.Component {
     phase: phasePropType.isRequired,
     changeIssue: Proptypes.func.isRequired,
     changePhase: Proptypes.func.isRequired,
-    getActivePhase: Proptypes.func.isRequired,
+    isVerylastIssue: Proptypes.func.isRequired,
     activeIssueIndex: Proptypes.number.isRequired
   }
 
@@ -24,7 +24,7 @@ class Phase extends React.Component {
       if (keyPressed !== ARROWUP && keyPressed !== ARROWDOWN && keyPressed !== SPACE) {
         return;
       }
-      if (props.getActivePhase().title !== INPROGRESS) {
+      if (!props.isVerylastIssue()) {
         props.changeIssue(this.getNextIndex(keyPressed));
       }
     });
@@ -37,7 +37,7 @@ class Phase extends React.Component {
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener(this.eventListener);
+    window.removeEventListener('keydown', this.eventListener);
   }
 
   getNextIndex = (keyPressed) => {

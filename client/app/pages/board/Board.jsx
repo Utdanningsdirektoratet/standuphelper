@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
-import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT } from 'utils/constants';
+import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, SPACE } from 'utils/constants';
 
 import Phase from './components/Phase';
+import Overview from './components/Overview';
 
 const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 
@@ -13,11 +14,15 @@ class Board extends React.Component {
     document.title = 'Staaaaaandup!';
     this.state = {
       activePhase: MERGE,
-      activeIssueIndex: 0
+      activeIssueIndex: 0,
+      displayOverview: true
     };
 
     this.eventListener = window.addEventListener('keydown', (e) => {
       const keyPressed = e.keyCode;
+      if (keyPressed === RETURN) {
+        this.toggleOverview();
+      }
       if (keyPressed !== ARROWLEFT && keyPressed !== ARROWRIGHT) {
         return;
       }
@@ -62,6 +67,10 @@ class Board extends React.Component {
     }
   }
 
+  isVerylastIssue = () => {
+    return this.state.activePhase === INPROGRESS && this.state.activeIssueIndex === this.props.board.inProgress.issues.length - 1;
+  }
+
   changeIssue = (newIndex) => {
     this.setState(prevState => Object.assign({}, prevState, { activeIssueIndex: newIndex }));
   }
@@ -74,20 +83,31 @@ class Board extends React.Component {
     }
   }
 
+  toggleOverview = () => {
+    this.setState(prevState => Object.assign({}, prevState, { displayOverview: !prevState.displayOverview }));
+  }
+
   render() {
-    return (
-      <div className="Section u--paddingTop2">
-        <div className="Section-content Grid">
-          <Phase
-            phase={this.getActivePhase()}
-            changePhase={this.changePhase}
-            changeIssue={this.changeIssue}
-            getActivePhase={this.getActivePhase}
-            activeIssueIndex={this.state.activeIssueIndex}
-          />
+    return this.state.displayOverview
+      ? (
+        <div className="Section u--paddingTop2">
+          <div className="u--paddingLeft10 Grid">
+            <Overview board={this.props.board} />
+          </div>
         </div>
-      </div>
-    );
+      ) : (
+        <div className="Section u--paddingTop2">
+          <div className="Section-content Grid">
+            <Phase
+              phase={this.getActivePhase()}
+              changePhase={this.changePhase}
+              changeIssue={this.changeIssue}
+              activeIssueIndex={this.state.activeIssueIndex}
+              isVerylastIssue={this.isVerylastIssue}
+          />
+          </div>
+        </div>
+      );
   }
 }
 

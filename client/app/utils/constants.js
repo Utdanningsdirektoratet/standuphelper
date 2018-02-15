@@ -9,3 +9,4 @@ export const ARROWUP = 38;
 export const ARROWLEFT = 37;
 
 export const SPACE = 32;
+export const RETURN = 13;
