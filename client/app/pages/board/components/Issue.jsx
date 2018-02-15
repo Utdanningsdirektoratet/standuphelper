@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@udir/udir-react-components/Box';
 import Badge from '@udir/udir-react-components/Badge';
+import ToolTip from '@udir/udir-react-components/ToolTip';
 import classnames from 'classnames';
 import { issue as issuePropType } from 'proptypes';
 
@@ -32,7 +33,9 @@ const Issue = ({ issue, visible }) => {
             </h1>
           </div>
           <div className="Grid-1-25 Grid--offset-1-25">
-            <img src={issue.avatar} alt={issue.assignee} />
+            <ToolTip message={issue.assignee}>
+              <img src={issue.avatar} alt={issue.assignee} />
+            </ToolTip>
           </div>
         </header>
         <div>
