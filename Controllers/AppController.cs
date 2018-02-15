@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using System.Net.Http.Formatting;
 using StandupHelper.Config;
 using StandupHelper.Utils;
 using System.Net.Http;
+using Microsoft.Extensions.Options;
 using StandupHelper.Models.Jira;
 using StandupHelper.Models.Response;
 using standuphelper.Models;
@@ -16,11 +18,13 @@ namespace StandupHelper.Controllers
     {
         private readonly HttpClientUtils _httpClientUtils;
         private readonly ILogger<AppController> _logger;
+        private readonly IOptions<JiraConfig> _jiraConfig;
 
-        public AppController(HttpClientUtils httpClientUtils, ILogger<AppController> logger)
+        public AppController(HttpClientUtils httpClientUtils, ILogger<AppController> logger, IOptions<JiraConfig> jiraConfig)
         {
             _httpClientUtils = httpClientUtils;
             _logger = logger;
+            _jiraConfig = jiraConfig;
         }
         public async Task<IActionResult> Index()
         {            
@@ -55,7 +59,7 @@ namespace StandupHelper.Controllers
 
         private async Task<ColumnResponseModel> GetMergeColumn(HttpClient client)
         {
-            var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='Done' AND (fixVersion in unreleasedVersions() OR fixVersion is EMPTY )");
+            var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql={_jiraConfig.Value.MergeColumnFilter}");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
             return new ColumnResponseModel(columnModel, "Merge");
         }

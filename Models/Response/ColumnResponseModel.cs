@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using StandupHelper.Models.Jira;
@@ -11,7 +12,7 @@ namespace StandupHelper.Models.Response
         public ColumnResponseModel(ColumnModel column, string title)
         {
             Title = title;
-            Issues = column.Issues.Select(i => new IssueResponseModel(i));
+            Issues = column.Issues.Where(i => !string.Equals(i.Fields.Issuetype.Name, "Epic", StringComparison.InvariantCultureIgnoreCase)).Select(i => new IssueResponseModel(i)).ToList();
         }
     }
 }

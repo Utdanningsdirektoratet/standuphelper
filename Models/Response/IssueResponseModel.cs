@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using StandupHelper.Models.Jira;
@@ -27,11 +28,11 @@ namespace StandupHelper.Models.Response
             Name = issue.Key;
             Type = issue.Fields.Issuetype.Name;
             Title = issue.Fields.Summary;
-            Assignee = issue.Fields.Assignee.Name;
-            Avatar = issue.Fields.Assignee.AvatarUrls["48x48"];
+            Assignee = issue.Fields.Assignee?.Name ?? "INGEN";
+            Avatar = issue.Fields.Assignee?.AvatarUrls["48x48"];
             Description = issue.Fields.Description?.Replace("\r\n", "<br/>");
             Labels = issue.Fields.Labels;
-            UnReleasedFixVersions = issue.Fields.FixVersions.Where(v => !v.Released).Select(v => v.Name);
+            UnReleasedFixVersions = issue.Fields.FixVersions.Where(v => !v.Released).Select(v => v.Name).ToList();
             ReleasedFixVersions = issue.Fields.FixVersions.Count() - UnReleasedFixVersions.Count();
         }
 
