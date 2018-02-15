@@ -71,7 +71,7 @@ class Phase extends React.Component {
   render() {
     return (
       <div className="Phase u--marginTop10">
-        <h1 className="u-title">{this.props.phase.title}</h1>
+        <h1 className="u-title">{this.props.phase.title} ({this.props.phase.issues.length})</h1>
         <div>
           {this.mapIssues()}
         </div>
