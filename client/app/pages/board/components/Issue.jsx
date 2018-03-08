@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@udir/udir-react-components/Box';
 import Badge from '@udir/udir-react-components/Badge';
-import Tooltip from '@udir/udir-react-components/Tooltip';
+import Tooltip, { Position } from '@udir/udir-react-components/Tooltip';
 import classnames from 'classnames';
 import { issue as issuePropType } from 'proptypes';
 
@@ -38,7 +38,7 @@ const Issue = ({ issue, visible, overview }) => {
             </h1>
           </div>
           <div className="Grid-1-25 Grid--offset-1-25">
-            <Tooltip message={issue.assignee}>
+            <Tooltip className="u--block" message={issue.assignee.toUpperCase()} position={Position.BOTTOM} alwaysShow={!overview}>
               <img src={issue.avatar} alt={issue.assignee} />
             </Tooltip>
           </div>
@@ -50,7 +50,9 @@ const Issue = ({ issue, visible, overview }) => {
             <div>
               <div className="Issue-description u--ellipsis">
                 {issue.description
-                  ? <p dangerouslySetInnerHTML={{ __html: issue.description }}></p>
+                  ? <p dangerouslySetInnerHTML={{ // eslint-disable-line
+                    __html: issue.description
+                  }}></p>
                   : <p>Nothing to see here!</p>
                 }
               </div>

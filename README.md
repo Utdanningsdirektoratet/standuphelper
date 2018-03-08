@@ -12,10 +12,10 @@ Foreløpig er det kun standuphelper som ligger her.
 
 * Tjenesten kjører i testase (App Service Environment), så det er litt problemer knyttet til sertifikater og MTU
 * Hvis du ikke har gjort det sett MTU til 1350 (se lenger ned)
-* Gå inn på helpers.scm.udir.tech i Firefox (beste browser for å laste ned sertifikater) og last ned sertifikatet. Installer det i 'Trused publishers'
 * Stå i <client>: `npm run prod`
 * Publish fra Visual Studio
-* OBS: fint om du ikke committer før du har kjørt `npm start` igjen slik at script-tagen i Index.cshtml endrer seg tilbake til "dev-mode"
+* OBS: Hvis det feiler på grunn av `certificate validation error`, gå inn på publish settings, trykk `Validate Connection` så `Save for future...` og `Accept` for å lagre sertifikatet lokalt
+* OBS: Fint om du ikke committer før du har kjørt `npm start` igjen slik at script-tagen i Index.cshtml endrer seg tilbake til "dev-mode"
 
 ### MTU
 Åpne  Powershell som admin:

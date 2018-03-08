@@ -3,7 +3,7 @@ import 'less/phase.less';
 import React from 'react';
 import Proptypes from 'prop-types';
 import { phase as phasePropType } from 'proptypes';
-import { ARROWUP, ARROWDOWN, SPACE, INPROGRESS } from 'utils/constants';
+import { ARROWUP, ARROWDOWN, SPACE } from 'utils/constants';
 
 import Issue from './Issue';
 
@@ -71,7 +71,7 @@ class Phase extends React.Component {
   render() {
     return (
       <div className="Phase u--marginTop10">
-        <h1 className="u-title">{this.props.phase.title} ({this.props.phase.issues.length})</h1>
+        <h1 className="u-title">{this.props.phase.title} ({this.props.activeIssueIndex + 1}/{this.props.phase.issues.length})</h1>
         <div>
           {this.mapIssues()}
         </div>
@@ -81,4 +81,3 @@ class Phase extends React.Component {
 }
 
 export default Phase;
-
