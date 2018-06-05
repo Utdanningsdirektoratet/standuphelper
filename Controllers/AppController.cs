@@ -54,14 +54,14 @@ namespace StandupHelper.Controllers
         {
             var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='{column}'");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
-            return new ColumnResponseModel(columnModel, column);
+            return ColumnResponseModel.ForColumn(columnModel, column);
         }
 
         private async Task<ColumnResponseModel> GetMergeColumn(HttpClient client)
         {
             var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql={_jiraConfig.Value.MergeColumnFilter}");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
-            return new ColumnResponseModel(columnModel, "Merge");
+            return ColumnResponseModel.ForMerge(columnModel);
         }
     }
 }
