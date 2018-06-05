@@ -3,7 +3,7 @@ import 'less/phase.less';
 import React from 'react';
 import { phase as phasePropType } from 'proptypes';
 
-import Issue from './Issue';
+import Issue from './issue';
 
 class Phase extends React.Component {
   static propTypes = {

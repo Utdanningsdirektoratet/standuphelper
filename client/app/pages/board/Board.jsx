@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
-import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, SPACE } from 'utils/constants';
+import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN } from 'utils/constants';
 
 import Phase from './components/Phase';
 import Overview from './components/Overview';

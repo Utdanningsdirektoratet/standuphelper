@@ -54,10 +54,6 @@ namespace StandupHelper.Controllers
         {
             var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='{column}'");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
-            if (column == "System Test")
-            {
-                columnModel.Issues = new List<IssueModel>();
-            }
             return new ColumnResponseModel(columnModel, column);
         }
 

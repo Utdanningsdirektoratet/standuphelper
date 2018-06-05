@@ -5,7 +5,7 @@ import Proptypes from 'prop-types';
 import { phase as phasePropType } from 'proptypes';
 import { ARROWUP, ARROWDOWN, SPACE } from 'utils/constants';
 
-import Issue from './Issue';
+import Issue from './issue';
 
 class Phase extends React.Component {
   static propTypes = {
