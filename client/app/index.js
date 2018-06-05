@@ -16,8 +16,3 @@ render(
   </AppContainer>,
   document.getElementById('app') // eslint-disable-line
 );
-
-// Hot Module Replacement
-if (module.hot) {
-  module.hot.accept();
-}

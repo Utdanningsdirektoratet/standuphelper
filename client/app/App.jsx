@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import layout from 'layout';
 import RouteContainer from 'RouteContainer';
-import Progress from 'react-progress-2';
 import Board from 'pages/board';
 
 const App = () => {
@@ -10,7 +9,7 @@ const App = () => {
     <Router>
       <RouteContainer>
         <div>
-          <Route path="/" component={Progress.Component} />
+          <Route path="/" />
           <Switch>
             <Route
               exact

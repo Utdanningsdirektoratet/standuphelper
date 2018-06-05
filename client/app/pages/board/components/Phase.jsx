@@ -24,9 +24,7 @@ class Phase extends React.Component {
       if (keyPressed !== ARROWUP && keyPressed !== ARROWDOWN && keyPressed !== SPACE) {
         return;
       }
-      if (!props.isVerylastIssue()) {
-        props.changeIssue(this.getNextIndex(keyPressed));
-      }
+      props.changeIssue(this.getNextIndex(keyPressed));
     });
   }
 
@@ -41,14 +39,20 @@ class Phase extends React.Component {
   }
 
   getNextIndex = (keyPressed) => {
-    const { activeIssueIndex } = this.props;
+    const { activeIssueIndex, isVerylastIssue } = this.props;
     const { issues } = this.props.phase;
+
+    if (keyPressed === ARROWDOWN && isVerylastIssue()) {
+      return activeIssueIndex;
+    }
+
+    if ((keyPressed === SPACE && activeIssueIndex === issues.length - 1) || (keyPressed === SPACE && issues.length === 0)) {
+      this.props.changePhase();
+      return 0;
+    }
 
     if (keyPressed === SPACE && activeIssueIndex !== issues.length - 1) {
       return activeIssueIndex + 1;
-    } else if (keyPressed === SPACE && activeIssueIndex === issues.length - 1) {
-      this.props.changePhase();
-      return 0;
     }
 
     if ((activeIssueIndex === 0 && keyPressed === ARROWUP) ||
@@ -57,6 +61,16 @@ class Phase extends React.Component {
     }
 
     return keyPressed === ARROWUP ? activeIssueIndex - 1 : activeIssueIndex + 1;
+  }
+
+  getCurrentIssueNumber = () => {
+    const { activeIssueIndex, phase } = this.props;
+
+    if (phase.issues.length === 0) {
+      return 0;
+    }
+
+    return activeIssueIndex + 1;
   }
 
   mapIssues = () => {
@@ -69,9 +83,10 @@ class Phase extends React.Component {
   }
 
   render() {
+    const { phase } = this.props;
     return (
       <div className="Phase u--marginTop10">
-        <h1 className="u-title">{this.props.phase.title} ({this.props.activeIssueIndex + 1}/{this.props.phase.issues.length})</h1>
+        <h1 className="u-title">{phase.title} ({this.getCurrentIssueNumber()}/{phase.issues.length})</h1>
         <div>
           {this.mapIssues()}
         </div>

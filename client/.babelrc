@@ -1,3 +1,3 @@
 {
-  "extends": "@udir/udir-react-components/.babelrc"
+  "extends": "@udir/udir-webpack-config/.babelrc"
 }
