@@ -20,7 +20,7 @@ const mapFixVersions = (issue) => {
 };
 
 const getTitle = (overview, issue) => {
-  return overview ? issue.name : `${issue.name} - ${trunc(issue.title, 50, false)}`;
+  return overview ? issue.name : `${issue.name} - ${trunc(issue.title, 70, false)}`;
 };
 
 const getDescription = (description) => {
@@ -33,8 +33,8 @@ const getDescription = (description) => {
 
 const Details = ({ visible, issue, overview }) => {
   const wrapperClassName = classnames({
-    'Grid-14-25': !overview,
-    'Grid--offset-4-25': !overview
+    'Grid-17-25': !overview,
+    'Grid--offset-3-25': !overview
   });
   const boxClassName = classnames({
     'Issue-details': true,

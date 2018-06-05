@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 const Steps = ({ visible, overview }) => {
   const className = classnames({
-    'Grid-7-25': !overview,
+    'Grid-5-25': !overview,
     'Issue-steps': true
   });
   return visible && !overview
