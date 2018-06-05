@@ -1,3 +1,5 @@
+import nobody from 'images/nobody.jpg';
+
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { issue as issuePropType } from 'proptypes';
@@ -53,7 +55,7 @@ const Details = ({ visible, issue, overview }) => {
             </div>
             <div className="Grid-1-25 Grid--offset-1-25">
               <Tooltip className="u--block" message={issue.assignee.toUpperCase()} position={Position.BOTTOM} alwaysShow={!overview}>
-                <img src={issue.avatar} alt={issue.assignee} />
+                <img className="Issue-avatar" src={issue.avatar || nobody} alt={issue.assignee} />
               </Tooltip>
             </div>
           </header>
@@ -64,7 +66,9 @@ const Details = ({ visible, issue, overview }) => {
               <div>
                 <div className="Issue-description">
                   {issue.description
-                    ? <div dangerouslySetInnerHTML={{ __html: getDescription(issue.description) }}></div>
+                    ? <div dangerouslySetInnerHTML={{ // eslint-disable-line
+                       __html: getDescription(issue.description)
+                      }}></div>
                     : <div>Nothing to see here!</div>
                   }
                 </div>
