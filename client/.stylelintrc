@@ -1,0 +1,3 @@
+{
+  "extends": "@udir/stylelint-config"
+}

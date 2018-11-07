@@ -3,7 +3,7 @@ const ConfigBuilder = require('@udir/udir-webpack-config');
 
 module.exports = new ConfigBuilder()
   .withProd()
-  .withHtml({ filename: '../../Views/App/Index.cshtml' })
+  .withEntry({ filename: '../../Views/App/Index.cshtml' })
   .withConfig({
     output: {
       publicPath: '/dist/',
