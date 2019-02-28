@@ -1,21 +1,63 @@
+@import (reference) "~@udir/udir-react-components/static/less/common/constants.less";
+
 .Issue {
-  
-  &-details {
-    height: 30rem;
+  background: @lightgrey;
+  position: relative;
+  padding: 20vh 4rem 25vh 2rem;
+  height: 100vh;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &--yellow {
+    background: @yellow;
+  }
+
+  &--red {
+    background: @red;
+  }
+
+  &--green {
+    background: @green;
+  }
+
+  &--blue {
+    background: @blue;
+  }
+
+  &--overview {
+    height: auto;
+    margin: 0 0 1rem 0;
+    padding: 1.5rem;
+    transform: none;
+  }
+
+  &-header {
+    font-weight: 700;
+  }
+
+  &--overview &-header {
+    font-weight: 500;
   }
 
   &-avatar {
-    max-height: 48px;
-    max-width: 48px;
+    max-height: 3rem;
+    max-width: 3rem;
+    margin-top: 0.25rem;
   }
 
   &-description {
-    height: 11rem;
     font-size: 2rem;
-    margin-top: 3.5rem;
     word-break: break-word;
-    overflow: hidden;
-    line-height: 120%;
+    line-height: 2rem;
+  }
+
+  &-footer {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    line-height: 3rem;
   }
 
   &-steps {
@@ -26,10 +68,5 @@
     font-size: 3rem;
     font-weight: 500;
     margin-bottom: 5rem;
-  }
-
-  &--small {
-    height: 10rem;
-    width: 25rem;
   }
 }

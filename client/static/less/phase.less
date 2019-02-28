@@ -1,3 +1,31 @@
 .Phase {
-  
+  position: relative;
+  padding: 0;
+
+  &-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: fixed;
+    left: 2rem;
+    top: 1rem;
+    z-index: 2;
+
+    &-clock {
+      right: 2rem;
+      position: fixed;
+    }
+  }
+
+  &-issues {
+    transition: all ease-in-out 0.5s;
+  }
+
+  &--overview {
+    padding: 0 0.5rem;
+  }
+
+  &--overview &-title {
+    position: relative;
+    left: 0;
+  }
 }

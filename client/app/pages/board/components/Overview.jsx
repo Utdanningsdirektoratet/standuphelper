@@ -1,16 +1,16 @@
 import React from 'react';
 import { board as boardPropType } from 'proptypes';
 
-import PhaseOverview from './PhaseOverview';
+import Phase from './Phase';
 
 const Overview = ({ board }) => {
   return (
-    <div className="Overview">
-      <PhaseOverview phase={board.inProgress} />
-      <PhaseOverview phase={board.peerReview} />
-      <PhaseOverview phase={board.test} />
-      <PhaseOverview phase={board.merge} />
-    </div>
+    <>
+      <Phase phase={board.inProgress} overview />
+      <Phase phase={board.peerReview} overview />
+      <Phase phase={board.test} overview />
+      <Phase phase={board.peerReview} overview />
+    </>
   );
 };
 

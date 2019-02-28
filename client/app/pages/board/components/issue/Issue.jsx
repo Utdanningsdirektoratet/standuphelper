@@ -3,25 +3,27 @@ import 'less/issue.less';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { issue as issuePropType } from 'proptypes';
+import { Element } from 'react-scroll';
 import Details from './components/Details';
-import Steps from './components/Steps';
 
 const Issue = (props) => {
-  const { overview } = props;
+  const { index, issue, overview } = props;
   const className = classnames({
     'Issue': true,
-    'Grid': !overview,
-    'Grid--reverse': !overview
+    'Issue--overview': overview,
+    [`Issue--${issue.color}`]: true
   });
   return (
-    <div className={className}>
+    <Element className={className} name={`${index}`}>
       <Details {...props} />
-      <Steps {...props} />
-    </div>
+    </Element>
   );
 };
 
 Issue.propTypes = {
+  index: PropTypes.number,
+  issue: issuePropType,
   overview: PropTypes.bool
 };
 

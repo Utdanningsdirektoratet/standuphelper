@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
-class RouteContainer extends React.Component {
+class RouteContainer extends React.PureComponent {
   render() {
     return React.Children.only(this.props.children);
   }
@@ -11,6 +11,5 @@ class RouteContainer extends React.Component {
 RouteContainer.propTypes = {
   children: PropTypes.node.isRequired
 };
-
 
 export default withRouter(RouteContainer);
