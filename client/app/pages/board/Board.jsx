@@ -25,7 +25,7 @@ class Board extends React.PureComponent {
 
     setTimeout(() => {
       animateScroll.scrollToTop({
-        smooth: true,
+        smooth: 'easeInOutQuint',
         duration: 350
       });
     }, 500);
@@ -66,6 +66,7 @@ class Board extends React.PureComponent {
         this.changePhase(this.getPhase(ARROWLEFT));
         return 0;
       }
+
       return issueIndex + 1;
     }
 
@@ -75,13 +76,13 @@ class Board extends React.PureComponent {
       if (issues.length === 0) {
         const phase = this.getBoardPhase(this.getPhase(ARROWRIGHT));
         this.changePhase(this.getPhase(ARROWRIGHT));
-        return phase.issues.length - 1;
+        return Math.max(phase.issues.length - 1, 0);
       }
 
       if (issueIndex === 0) {
         const phase = this.getBoardPhase(this.getPhase(ARROWRIGHT));
         this.changePhase(this.getPhase(ARROWRIGHT));
-        return phase.issues.length - 1;
+        return Math.max(phase.issues.length - 1, 0);
       }
       return issueIndex - 1;
     }
@@ -136,9 +137,8 @@ class Board extends React.PureComponent {
 
   changeIssue = (newIndex) => {
     this.setState({ issueIndex: newIndex }, () => {
-      scroller.scrollTo(`${newIndex}`, {
-        smooth: true,
-        duration: 350
+      scroller.scrollTo(`${this.state.phase}-${newIndex}`, {
+        smooth: 'easeInOutQuart'
       });
     });
   }
@@ -162,7 +162,7 @@ class Board extends React.PureComponent {
           duration: 0
         });
       } else {
-        scroller.scrollTo(`${this.state.issueIndex}`, {
+        scroller.scrollTo(`${this.state.phase}-${this.state.issueIndex}`, {
           smooth: false,
           duration: 0
         });
@@ -184,7 +184,7 @@ class Board extends React.PureComponent {
           ? (
             <Overview board={this.props.board} />
           ) : (
-            <Phase phase={this.getActivePhase()} issueIndex={this.state.issueIndex} />
+            <Phase phase={this.getActivePhase()} phaseName={this.state.phase} issueIndex={this.state.issueIndex} />
           )}
       </div>
     );

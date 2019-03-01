@@ -3,7 +3,7 @@
 .Issue {
   background: @lightgrey;
   position: relative;
-  padding: 20vh 4rem 25vh 2rem;
+  padding: 6rem 4rem 2rem;
   height: 100vh;
 
   &:last-of-type {
@@ -35,10 +35,25 @@
 
   &-header {
     font-weight: 700;
+    border-bottom: 0.125rem solid @black;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+
+    &-content {
+      display: inline-block;
+      width: 95%;
+    }
   }
 
   &--overview &-header {
     font-weight: 500;
+    margin-bottom: 0;
+    font-size: 2rem;
+    border-bottom: none;
+
+    &-content {
+      display: inline;
+    }
   }
 
   &-avatar {
@@ -50,14 +65,13 @@
   &-description {
     font-size: 2rem;
     word-break: break-word;
-    line-height: 2rem;
+    overflow: hidden;
   }
 
   &-footer {
     position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    line-height: 3rem;
+    bottom: 1rem;
+    left: 4rem;
   }
 
   &-steps {

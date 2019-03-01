@@ -4,21 +4,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { phase as phasePropType } from 'proptypes';
-
-import { } from 'utils/constants';
+import { Element } from 'react-scroll';
 import Issue from './issue';
 
 class Phase extends React.PureComponent {
   state = {
-    time: null
+    time: '00:00:00'
   }
 
   componentDidMount() {
-    this.timeout = setInterval(this.getTime, 500);
+    this.interval = setInterval(this.getTime, 500);
   }
 
   componentWillUnmount() {
-    clearInterval(this.timeout);
+    if (this.interval) clearInterval(this.interval);
   }
 
   getCurrentIssueNumber = () => {
@@ -45,10 +44,14 @@ class Phase extends React.PureComponent {
   }
 
   mapIssues = () => {
-    const { phase, overview } = this.props;
+    const { phase, phaseName, overview } = this.props;
+
+    if (phase.issues.length === 0) {
+      return <Element name={`${phaseName}-0`} />;
+    }
 
     return phase.issues.map((issue, i) => {
-      return <Issue key={`issue-${issue.id}`} index={i} issue={issue} overview={overview} />;
+      return <Issue key={`issue-${phaseName}-${issue.id}`} phase={phaseName} index={i} issue={issue} overview={overview} />;
     });
   }
 
@@ -81,6 +84,7 @@ class Phase extends React.PureComponent {
 
 Phase.propTypes = {
   issueIndex: PropTypes.number,
+  phaseName: PropTypes.string,
   phase: phasePropType.isRequired,
   overview: PropTypes.bool
 };

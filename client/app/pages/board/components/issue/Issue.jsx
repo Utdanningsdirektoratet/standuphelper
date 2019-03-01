@@ -8,20 +8,21 @@ import { Element } from 'react-scroll';
 import Details from './components/Details';
 
 const Issue = (props) => {
-  const { index, issue, overview } = props;
+  const { phase, index, issue, overview } = props;
   const className = classnames({
     'Issue': true,
     'Issue--overview': overview,
     [`Issue--${issue.color}`]: true
   });
   return (
-    <Element className={className} name={`${index}`}>
+    <Element className={className} name={`${phase}-${index}`}>
       <Details {...props} />
     </Element>
   );
 };
 
 Issue.propTypes = {
+  phase: PropTypes.string,
   index: PropTypes.number,
   issue: issuePropType,
   overview: PropTypes.bool

@@ -13,7 +13,7 @@
     "@udir/babel-config": "^3.0.1",
     "@udir/eslint-config": "^1.1.7",
     "@udir/stylelint-config": "^1.0.5",
-    "@udir/udir-webpack-config": "^3.3.1",
+    "@udir/udir-webpack-config": "^3.3.2",
     "react-hot-loader": "^4.7.1"
   },
   "dependencies": {
@@ -21,9 +21,9 @@
     "classnames": "^2.2.6",
     "date-fns": "^1.30.1",
     "dompurify": "^1.0.10",
+    "jira2md": "^2.0.3",
     "lodash.debounce": "^4.0.8",
     "lodash.flatten": "^4.4.0",
-    "marked": "^0.6.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-redux": "^6.0.1",
