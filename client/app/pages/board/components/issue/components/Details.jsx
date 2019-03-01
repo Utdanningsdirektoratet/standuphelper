@@ -26,7 +26,7 @@ const getDescription = (description) => {
     ALLOWED_TAGS: ['br'],
     KEEP_CONTENT: true,
     RETURN_DOM: false
-  }), 500, true));
+  }), 500, true), { smartLists: true, smartypants: true });
 };
 
 const Details = ({ issue, overview }) => {

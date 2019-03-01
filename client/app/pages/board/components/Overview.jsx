@@ -9,7 +9,7 @@ const Overview = ({ board }) => {
       <Phase phase={board.inProgress} overview />
       <Phase phase={board.peerReview} overview />
       <Phase phase={board.test} overview />
-      <Phase phase={board.peerReview} overview />
+      <Phase phase={board.merge} overview />
     </>
   );
 };

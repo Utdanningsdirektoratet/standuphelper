@@ -24,7 +24,10 @@ class Board extends React.PureComponent {
     window.addEventListener('keydown', this.onKeydown);
 
     setTimeout(() => {
-      animateScroll.scrollToTop();
+      animateScroll.scrollToTop({
+        smooth: true,
+        duration: 350
+      });
     }, 500);
   }
 
@@ -134,7 +137,8 @@ class Board extends React.PureComponent {
   changeIssue = (newIndex) => {
     this.setState({ issueIndex: newIndex }, () => {
       scroller.scrollTo(`${newIndex}`, {
-        smooth: true
+        smooth: true,
+        duration: 350
       });
     });
   }

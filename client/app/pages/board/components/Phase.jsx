@@ -33,7 +33,7 @@ class Phase extends React.PureComponent {
 
   getTime = () => {
     const today = new Date();
-    const h = today.getHours();
+    const h = this.checkTime(today.getHours());
     const m = this.checkTime(today.getMinutes());
     const s = this.checkTime(today.getSeconds());
     this.setState({ time: `${h}:${m}:${s}` });
