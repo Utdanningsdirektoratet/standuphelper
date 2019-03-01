@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { issue as issuePropType } from 'proptypes';
 import Badge, { Position as BadgePosition } from '@udir/udir-react-components/Badge';
-import Tooltip, { Position } from '@udir/udir-react-components/Tooltip';
 import DOMPurify from 'dompurify';
 import j2m from 'jira2md';
 
@@ -35,16 +34,19 @@ const getDescription = (description) => {
 };
 
 const Details = ({ issue, overview }) => {
+  if (issue.fake) return null;
+
   return (
     <div className="Issue-content">
       {overview ? mapReleasedFixVersions(issue, overview) : null}
 
       <h1 className="Issue-header u-h1">
-        <span className="Issue-header-content">{getTitle(overview, issue)}</span>
-
-        <Tooltip enabled={!overview} className="u--inlineBlock u--right" message={issue.assignee.toUpperCase()} position={Position.TOP} alwaysShow>
+        <div className="Issue-title">
+          {getTitle(overview, issue)}
           <img className="Issue-avatar" src={issue.avatar || nobody} alt={issue.assignee} />
-        </Tooltip>
+        </div>
+
+        {!overview ? <div className="Issue-assignee">{issue.assignee.toUpperCase()}</div> : null}
       </h1>
 
       {overview

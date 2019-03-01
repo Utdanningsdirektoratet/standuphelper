@@ -47,7 +47,7 @@ class Phase extends React.PureComponent {
     const { phase, phaseName, overview } = this.props;
 
     if (phase.issues.length === 0) {
-      return <Element name={`${phaseName}-0`} />;
+      return <Issue key={`issue-${phaseName}-${0}`} phase={phaseName} issue={{ color: 'white', fake: true }} index={0} />;
     }
 
     return phase.issues.map((issue, i) => {
@@ -56,7 +56,7 @@ class Phase extends React.PureComponent {
   }
 
   render() {
-    const { phase, overview } = this.props;
+    const { phase, active, overview } = this.props;
 
     const phaseClass = classnames({
       'Phase': true,
@@ -68,12 +68,13 @@ class Phase extends React.PureComponent {
       <div className={phaseClass}>
         {overview ? (
           <h1 className="Phase-title u-h1">{phase.title} ({phase.issues.length})</h1>
-        ) : (
+        ) : null }
+        {!overview && active === phase ? (
           <h1 className="Phase-title u-h1">
             {phase.title} ({this.getCurrentIssueNumber()}/{phase.issues.length})
             <span className="Phase-title-clock">{this.state.time}</span>
           </h1>
-        )}
+        ) : null}
         <div className="Phase-issues">
           {this.mapIssues()}
         </div>
@@ -85,6 +86,7 @@ class Phase extends React.PureComponent {
 Phase.propTypes = {
   issueIndex: PropTypes.number,
   phaseName: PropTypes.string,
+  active: phasePropType,
   phase: phasePropType.isRequired,
   overview: PropTypes.bool
 };

@@ -26,6 +26,10 @@
     background: @blue;
   }
 
+  &--white {
+    background: @white;
+  }
+
   &--overview {
     height: auto;
     margin: 0 0 1rem 0;
@@ -35,31 +39,34 @@
 
   &-header {
     font-weight: 700;
-    border-bottom: 0.125rem solid @black;
     margin-bottom: 2rem;
     font-size: 2.5rem;
+  }
 
-    &-content {
-      display: inline-block;
-      width: 95%;
-    }
+  &-title {
+    border-bottom: 0.125rem solid @black;
   }
 
   &--overview &-header {
     font-weight: 500;
     margin-bottom: 0;
     font-size: 2rem;
-    border-bottom: none;
+  }
 
-    &-content {
-      display: inline;
-    }
+  &--overview &-title {
+    border-bottom: none;
   }
 
   &-avatar {
     max-height: 3rem;
     max-width: 3rem;
     margin-top: 0.25rem;
+    float: right;
+  }
+
+  &-assignee {
+    float: right;
+    font-size: 1.5rem;
   }
 
   &-description {
@@ -72,15 +79,5 @@
     position: absolute;
     bottom: 1rem;
     left: 4rem;
-  }
-
-  &-steps {
-    margin-top: 5rem;
-  }
-
-  &-step {
-    font-size: 3rem;
-    font-weight: 500;
-    margin-bottom: 5rem;
   }
 }

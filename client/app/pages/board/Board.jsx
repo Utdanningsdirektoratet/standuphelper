@@ -8,7 +8,6 @@ import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETUR
 import { animateScroll, scroller } from 'react-scroll';
 
 import Phase from './components/Phase';
-import Overview from './components/Overview';
 
 const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 
@@ -23,9 +22,9 @@ class Board extends React.PureComponent {
     document.title = 'Staaaaaandup!';
     window.addEventListener('keydown', this.onKeydown);
 
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       animateScroll.scrollToTop({
-        smooth: 'easeInOutQuint',
+        smooth: true,
         duration: 350
       });
     }, 500);
@@ -33,18 +32,25 @@ class Board extends React.PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeydown);
+    if (this.timeout) clearTimeout(this.timeout);
   }
 
   onKeydown = (e) => {
     const keyPressed = e.which;
     if (keyPressed === RETURN) {
+      e.preventDefault();
+      e.stopPropagation();
       this.toggleOverview();
     }
     if (!this.state.overview) {
       if ((keyPressed === ARROWUP || keyPressed === ARROWDOWN || keyPressed === SPACE)) {
+        e.preventDefault();
+        e.stopPropagation();
         this.changeIssue(this.getIssue(keyPressed));
       }
       if ((keyPressed === ARROWLEFT || keyPressed === ARROWRIGHT)) {
+        e.preventDefault();
+        e.stopPropagation();
         this.changePhase(this.getPhase(keyPressed));
       }
     }
@@ -55,39 +61,35 @@ class Board extends React.PureComponent {
     const { issues } = this.getActivePhase();
 
     if ((keyPressed === ARROWDOWN || keyPressed === SPACE)) {
-      if (this.isLastIssue()) return issueIndex;
+      if (this.isLastIssue()) return { index: issueIndex, phase: this.state.phase };
 
       if (issues.length === 0) {
-        this.changePhase(this.getPhase(ARROWLEFT));
-        return 0;
+        return { index: 0, phase: this.getPhase(ARROWLEFT) };
       }
 
       if (issueIndex === issues.length - 1) {
-        this.changePhase(this.getPhase(ARROWLEFT));
-        return 0;
+        return { index: 0, phase: this.getPhase(ARROWLEFT) };
       }
 
-      return issueIndex + 1;
+      return { index: issueIndex + 1, phase: this.state.phase };
     }
 
     if (keyPressed === ARROWUP) {
-      if (this.isFirstIssue()) return issueIndex;
+      if (this.isFirstIssue()) return { index: issueIndex, phase: this.state.phase };
 
       if (issues.length === 0) {
         const phase = this.getBoardPhase(this.getPhase(ARROWRIGHT));
-        this.changePhase(this.getPhase(ARROWRIGHT));
-        return Math.max(phase.issues.length - 1, 0);
+        return { index: Math.max(phase.issues.length - 1, 0), phase: this.getPhase(ARROWRIGHT) };
       }
 
       if (issueIndex === 0) {
         const phase = this.getBoardPhase(this.getPhase(ARROWRIGHT));
-        this.changePhase(this.getPhase(ARROWRIGHT));
-        return Math.max(phase.issues.length - 1, 0);
+        return { index: Math.max(phase.issues.length - 1, 0), phase: this.getPhase(ARROWRIGHT) };
       }
-      return issueIndex - 1;
+      return { index: issueIndex - 1, phase: this.state.phase };
     }
 
-    return issueIndex;
+    return { index: issueIndex, phase: this.state.phase };
   }
 
   getPhase = (keyPressed) => {
@@ -135,9 +137,9 @@ class Board extends React.PureComponent {
     return this.state.phase === MERGE && this.state.issueIndex === 0;
   }
 
-  changeIssue = (newIndex) => {
-    this.setState({ issueIndex: newIndex }, () => {
-      scroller.scrollTo(`${this.state.phase}-${newIndex}`, {
+  changeIssue = ({ index, phase }) => {
+    this.setState({ issueIndex: index, phase }, () => {
+      scroller.scrollTo(`${phase}-${index}`, {
         smooth: 'easeInOutQuart'
       });
     });
@@ -146,9 +148,8 @@ class Board extends React.PureComponent {
   changePhase = (nextPhase) => {
     if (this.state.phase !== nextPhase) {
       this.setState({ phase: nextPhase, issueIndex: 0 }, () => {
-        animateScroll.scrollToTop({
-          smooth: false,
-          duration: 0
+        scroller.scrollTo(`${nextPhase}-${0}`, {
+          smooth: 'easeInOutQuart'
         });
       });
     }
@@ -172,6 +173,8 @@ class Board extends React.PureComponent {
 
 
   render() {
+    const { board } = this.props;
+
     const boardClass = classnames({
       'Board': true,
       'Grid': true,
@@ -182,9 +185,19 @@ class Board extends React.PureComponent {
       <div className={boardClass}>
         {this.state.overview
           ? (
-            <Overview board={this.props.board} />
+            <>
+              <Phase phase={board.inProgress} phaseName={INPROGRESS} overview />
+              <Phase phase={board.peerReview} phaseName={PEERREVIEW} overview />
+              <Phase phase={board.test} phaseName={SYSTEMTEST} overview />
+              <Phase phase={board.merge} phaseName={MERGE} overview />
+            </>
           ) : (
-            <Phase phase={this.getActivePhase()} phaseName={this.state.phase} issueIndex={this.state.issueIndex} />
+            <>
+              <Phase phase={board.merge} active={this.getActivePhase()} phaseName={MERGE} issueIndex={this.state.issueIndex} />
+              <Phase phase={board.test} active={this.getActivePhase()} phaseName={SYSTEMTEST} issueIndex={this.state.issueIndex} />
+              <Phase phase={board.peerReview} active={this.getActivePhase()} phaseName={PEERREVIEW} issueIndex={this.state.issueIndex} />
+              <Phase phase={board.inProgress} active={this.getActivePhase()} phaseName={INPROGRESS} issueIndex={this.state.issueIndex} />
+            </>
           )}
       </div>
     );
