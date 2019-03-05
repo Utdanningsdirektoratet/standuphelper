@@ -4,7 +4,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
-import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE } from 'utils/constants';
+import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE } from 'utils/constants';
 import { animateScroll, scroller } from 'react-scroll';
 
 import Phase from './components/Phase';
@@ -43,6 +43,11 @@ class Board extends React.PureComponent {
       this.toggleOverview();
     }
     if (!this.state.overview) {
+      if (keyPressed === ESCAPE) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleOverview();
+      }
       if ((keyPressed === ARROWUP || keyPressed === ARROWDOWN || keyPressed === SPACE)) {
         e.preventDefault();
         e.stopPropagation();
@@ -170,7 +175,6 @@ class Board extends React.PureComponent {
       }
     });
   }
-
 
   render() {
     const { board } = this.props;

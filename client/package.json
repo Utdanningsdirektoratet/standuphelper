@@ -14,7 +14,7 @@
     "@udir/eslint-config": "^1.1.7",
     "@udir/stylelint-config": "^1.0.5",
     "@udir/udir-webpack-config": "^3.3.2",
-    "react-hot-loader": "^4.7.1"
+    "react-hot-loader": "^4.7.2"
   },
   "dependencies": {
     "@udir/udir-react-components": "^32.2.2",

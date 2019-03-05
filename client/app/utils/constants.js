@@ -10,3 +10,4 @@ export const ARROWLEFT = 37;
 
 export const SPACE = 32;
 export const RETURN = 13;
+export const ESCAPE = 27;
