@@ -42,7 +42,7 @@ const Details = ({ issue, overview }) => {
 
       <h1 className="Issue-header u-h1">
         <div className="Issue-title">
-          {getTitle(overview, issue)}
+          <span className="Issue-title-content">{getTitle(overview, issue)}</span>
           <img className="Issue-avatar" src={issue.avatar || nobody} alt={issue.assignee} />
         </div>
 
