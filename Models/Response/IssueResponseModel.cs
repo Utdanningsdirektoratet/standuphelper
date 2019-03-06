@@ -38,14 +38,14 @@ namespace StandupHelper.Models.Response
 
         private string GetColor() 
         {
-            switch(Type) 
+            switch(Type)
             {
                 case "Story": 
                     return "green";
                 case "Bug":
                     return "red";
                 case "Task":
-                    return "offwhite";
+                    return "yellow";
                 default:
                     return "grey";
             }

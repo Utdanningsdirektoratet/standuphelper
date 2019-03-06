@@ -4,9 +4,9 @@ import { issue as issuePropType } from 'proptypes';
 import Badge, { Position as BadgePosition } from '@udir/udir-react-components/Badge';
 import DOMPurify from 'dompurify';
 import j2m from 'jira2md';
+import ellipsize from 'ellipsize';
 
 import nobody from 'images/nobody.jpg';
-import { trunc } from '../utils';
 
 
 const mapLabels = (issue) => {
@@ -22,15 +22,15 @@ const mapReleasedFixVersions = (issue, overview) => {
 };
 
 const getTitle = (overview, issue) => {
-  return overview ? issue.name : `${issue.name} - ${trunc(issue.title, 70, false)}`;
+  return overview ? issue.name : `${issue.name} - ${ellipsize(issue.title, 40)}`;
 };
 
 const getDescription = (description) => {
-  return trunc(DOMPurify.sanitize(description, {
-    ALLOWED_TAGS: ['br'],
-    KEEP_CONTENT: true,
-    RETURN_DOM: false
-  }), 500, true).replace(/<br>(<br>)+/ig, '<br>');
+  return ellipsize(DOMPurify.sanitize(j2m.jira_to_html(description))
+    .replace(/^<p>(\s?<br>\s?)+/ig, '<p>')
+    .replace(/(\s?<br>\s?)+<\/p>$/ig, '</p>')
+    .replace(/<br>(\s?<br>\s?)+/ig, '<br><br>'),
+  256);
 };
 
 const Details = ({ issue, overview }) => {
@@ -38,7 +38,7 @@ const Details = ({ issue, overview }) => {
 
   return (
     <div className="Issue-content">
-      {overview ? mapReleasedFixVersions(issue, overview) : null}
+      {overview ? mapReleasedFixVersions(issue, true) : null}
 
       <h1 className="Issue-header u-h1">
         <div className="Issue-title">
@@ -56,12 +56,13 @@ const Details = ({ issue, overview }) => {
             <div className="Issue-description">
               {issue.description ? (
                 <div dangerouslySetInnerHTML={{ // eslint-disable-line
-                  __html: j2m.jira_to_html(getDescription(issue.description))
+                  __html: getDescription(issue.description)
                 }} />
               ) : null}
             </div>
             <div className="Issue-footer">
-              {mapReleasedFixVersions(issue, overview)}
+              <Badge className="u--marginRight1" color={issue.color} value={issue.type} wide />
+              {mapReleasedFixVersions(issue, false)}
               {mapLabels(issue)}
               {mapFixVersions(issue)}
             </div>
