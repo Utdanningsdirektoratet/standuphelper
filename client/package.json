@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@udir/babel-config": "^4.0.0",
+    "@udir/babel-config": "^4.0.1",
     "@udir/browserslist-config": "^1.0.0",
     "@udir/eslint-config": "^1.1.10",
     "@udir/stylelint-config": "^1.1.1",
