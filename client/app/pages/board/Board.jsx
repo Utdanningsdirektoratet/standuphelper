@@ -197,6 +197,7 @@ class Board extends React.PureComponent {
 
   setTimeout = () => {
     this.clearTimeout();
+    if (this.isLastIssue()) return;
     this.setState({ loading: 0 }, () => {
       this.timeout = setTimeout(() => {
         this.interval = setInterval(() => {
