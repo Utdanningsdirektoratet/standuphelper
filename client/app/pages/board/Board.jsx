@@ -4,10 +4,12 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
-import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE } from 'utils/constants';
+import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE, S } from 'utils/constants';
 import { animateScroll, scroller } from 'react-scroll';
+import LoadingBar from 'react-top-loading-bar';
 
 import Phase from './components/Phase';
+import Shame from './components/Shame';
 
 const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 
@@ -15,8 +17,14 @@ class Board extends React.PureComponent {
   state = {
     phase: MERGE,
     issueIndex: 0,
-    overview: true
+    overview: true,
+    loading: 0,
+    shame: false
   };
+
+  timeout = null;
+
+  interval = null;
 
   componentDidMount() {
     document.title = 'Staaaaaandup!';
@@ -58,6 +66,14 @@ class Board extends React.PureComponent {
         e.stopPropagation();
         this.changePhase(this.getPhase(keyPressed));
       }
+      if (keyPressed === S) {
+        this.setState({ shame: true }, () => {
+          setTimeout(() => {
+            this.setState({ shame: false });
+          }, 1000);
+        });
+      }
+      this.setTimeout();
     }
   }
 
@@ -144,6 +160,7 @@ class Board extends React.PureComponent {
 
   changeIssue = ({ index, phase }) => {
     this.setState({ issueIndex: index, phase }, () => {
+      this.setTimeout();
       scroller.scrollTo(`${phase}-${index}`, {
         smooth: 'easeInOutQuart'
       });
@@ -161,19 +178,41 @@ class Board extends React.PureComponent {
   }
 
   toggleOverview = () => {
-    this.setState(prevState => ({ overview: !prevState.overview }), () => {
+    this.setState(prevState => ({ overview: !prevState.overview, loading: 0 }), () => {
       if (this.state.overview) {
+        this.clearTimeout();
         animateScroll.scrollToTop({
           smooth: false,
           duration: 0
         });
       } else {
+        this.setTimeout();
         scroller.scrollTo(`${this.state.phase}-${this.state.issueIndex}`, {
           smooth: false,
           duration: 0
         });
       }
     });
+  }
+
+  setTimeout = () => {
+    this.clearTimeout();
+    this.setState({ loading: 0 }, () => {
+      this.timeout = setTimeout(() => {
+        this.interval = setInterval(() => {
+          if (this.state.loading > 100) {
+            this.changeIssue(this.getIssue(ARROWDOWN));
+          } else {
+            this.setState(prevState => ({ loading: prevState.loading + 1 }));
+          }
+        }, 100);
+      }, 300000);
+    });
+  }
+
+  clearTimeout = () => {
+    clearTimeout(this.timeout);
+    clearInterval(this.interval);
   }
 
   render() {
@@ -187,22 +226,46 @@ class Board extends React.PureComponent {
 
     return (
       <div className={boardClass}>
-        {this.state.overview
-          ? (
-            <>
-              <Phase phase={board.inProgress} phaseName={INPROGRESS} overview />
-              <Phase phase={board.peerReview} phaseName={PEERREVIEW} overview />
-              <Phase phase={board.test} phaseName={SYSTEMTEST} overview />
-              <Phase phase={board.merge} phaseName={MERGE} overview />
-            </>
-          ) : (
-            <>
-              <Phase phase={board.merge} active={this.getActivePhase()} phaseName={MERGE} issueIndex={this.state.issueIndex} />
-              <Phase phase={board.test} active={this.getActivePhase()} phaseName={SYSTEMTEST} issueIndex={this.state.issueIndex} />
-              <Phase phase={board.peerReview} active={this.getActivePhase()} phaseName={PEERREVIEW} issueIndex={this.state.issueIndex} />
-              <Phase phase={board.inProgress} active={this.getActivePhase()} phaseName={INPROGRESS} issueIndex={this.state.issueIndex} />
-            </>
-          )}
+        <LoadingBar
+          height={this.state.loading > 0 ? 5 : 0}
+          progress={this.state.loading}
+        />
+        {this.state.overview ? (
+          <>
+            <Phase phase={board.inProgress} phaseName={INPROGRESS} overview />
+            <Phase phase={board.peerReview} phaseName={PEERREVIEW} overview />
+            <Phase phase={board.test} phaseName={SYSTEMTEST} overview />
+            <Phase phase={board.merge} phaseName={MERGE} overview />
+          </>
+        ) : (
+          <>
+            <Phase
+              phase={board.merge}
+              active={this.getActivePhase()}
+              phaseName={MERGE}
+              issueIndex={this.state.issueIndex}
+            />
+            <Phase
+              phase={board.test}
+              active={this.getActivePhase()}
+              phaseName={SYSTEMTEST}
+              issueIndex={this.state.issueIndex}
+            />
+            <Phase
+              phase={board.peerReview}
+              active={this.getActivePhase()}
+              phaseName={PEERREVIEW}
+              issueIndex={this.state.issueIndex}
+            />
+            <Phase
+              phase={board.inProgress}
+              active={this.getActivePhase()}
+              phaseName={INPROGRESS}
+              issueIndex={this.state.issueIndex}
+            />
+            <Shame animate={this.state.shame} />
+          </>
+        )}
       </div>
     );
   }

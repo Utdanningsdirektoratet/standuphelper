@@ -4,7 +4,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { phase as phasePropType } from 'proptypes';
-import { Element } from 'react-scroll';
 import Issue from './issue';
 
 class Phase extends React.PureComponent {
