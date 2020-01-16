@@ -67,14 +67,21 @@ class Board extends React.PureComponent {
         this.changePhase(this.getPhase(keyPressed));
       }
       if (keyPressed === S) {
+        e.preventDefault();
+        e.stopPropagation();
         this.setState({ shame: true }, () => {
           setTimeout(() => {
             this.setState({ shame: false });
           }, 1000);
         });
+      } else {
+        this.setTimeout();
       }
-      this.setTimeout();
     }
+  }
+
+  getNumberOfIssues = () => {
+    return Object.keys(this.props.board).reduce((acc, curr) => acc + this.props.board[curr].issues.length, 0);
   }
 
   getIssue = (keyPressed) => {
@@ -197,17 +204,20 @@ class Board extends React.PureComponent {
 
   setTimeout = () => {
     this.clearTimeout();
-    if (this.isLastIssue()) return;
     this.setState({ loading: 0 }, () => {
       this.timeout = setTimeout(() => {
         this.interval = setInterval(() => {
           if (this.state.loading > 100) {
-            this.changeIssue(this.getIssue(ARROWDOWN));
+            if (this.isLastIssue()) {
+              this.toggleOverview();
+            } else {
+              this.changeIssue(this.getIssue(ARROWDOWN));
+            }
           } else {
             this.setState(prevState => ({ loading: prevState.loading + 1 }));
           }
         }, 100);
-      }, 300000);
+      }, (900000 / this.getNumberOfIssues()) - 10000);
     });
   }
 
