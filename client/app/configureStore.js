@@ -15,7 +15,7 @@ export default function configureStore(initialState = {}) {
     initialState,
     compose(
       middleware,
-      __DEV__ && window.devToolsExtension ? window.devToolsExtension() : f => f
+      __DEV__ && window.devToolsExtension ? window.devToolsExtension() : (f) => f
     )
   );
 

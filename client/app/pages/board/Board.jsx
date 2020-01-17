@@ -7,6 +7,11 @@ import { board as boardPropType } from 'proptypes';
 import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE, S } from 'utils/constants';
 import { animateScroll, scroller } from 'react-scroll';
 import LoadingBar from 'react-top-loading-bar';
+import getHours from 'date-fns/getHours';
+import getMinutes from 'date-fns/getMinutes';
+import setMinutes from 'date-fns/setMinutes';
+import startOfMinute from 'date-fns/startOfMinute';
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 
 import Phase from './components/Phase';
 import Shame from './components/Shame';
@@ -80,10 +85,6 @@ class Board extends React.PureComponent {
     }
   }
 
-  getNumberOfIssues = () => {
-    return Object.keys(this.props.board).reduce((acc, curr) => acc + this.props.board[curr].issues.length, 0);
-  }
-
   getIssue = (keyPressed) => {
     const { issueIndex } = this.state;
     const { issues } = this.getActivePhase();
@@ -126,7 +127,7 @@ class Board extends React.PureComponent {
       return phase;
     }
 
-    const currentIndex = phaseOrder.findIndex(o => o === phase);
+    const currentIndex = phaseOrder.findIndex((o) => o === phase);
     if ((currentIndex === 0 && keyPressed === ARROWLEFT)
       || (currentIndex === phaseOrder.length - 1 && keyPressed === ARROWRIGHT)) {
       return phase;
@@ -157,6 +158,27 @@ class Board extends React.PureComponent {
     }
   }
 
+  getNumberOfIssuesLeft = () => {
+    return this.getNumberOfIssues(this.state.phase) - this.state.issueIndex;
+  }
+
+  getNumberOfIssues = (phase) => {
+    const { board } = this.props;
+
+    switch (phase) {
+      case INPROGRESS:
+        return board.inProgress.issues.length;
+      case PEERREVIEW:
+        return board.peerReview.issues.length + this.getNumberOfIssues(INPROGRESS);
+      case SYSTEMTEST:
+        return board.test.issues.length + this.getNumberOfIssues(PEERREVIEW);
+      case MERGE:
+        return board.merge.issues.length + this.getNumberOfIssues(SYSTEMTEST);
+      default:
+        return Object.keys(board).reduce((acc, curr) => acc + board[curr].issues.length, 0);
+    }
+  }
+
   isLastIssue = () => {
     return this.state.phase === INPROGRESS && this.state.issueIndex === this.getActivePhase().issues.length - 1;
   }
@@ -167,7 +189,6 @@ class Board extends React.PureComponent {
 
   changeIssue = ({ index, phase }) => {
     this.setState({ issueIndex: index, phase }, () => {
-      this.setTimeout();
       scroller.scrollTo(`${phase}-${index}`, {
         smooth: 'easeInOutQuart'
       });
@@ -185,7 +206,7 @@ class Board extends React.PureComponent {
   }
 
   toggleOverview = () => {
-    this.setState(prevState => ({ overview: !prevState.overview, loading: 0 }), () => {
+    this.setState((prevState) => ({ overview: !prevState.overview, loading: 0 }), () => {
       if (this.state.overview) {
         this.clearTimeout();
         animateScroll.scrollToTop({
@@ -202,6 +223,14 @@ class Board extends React.PureComponent {
     });
   }
 
+  getTimeLeft = () => {
+    // Between 11:15 and 11:30
+    if (getHours(new Date()) === 11 && getMinutes(new Date()) >= 15 && getMinutes(new Date()) < 30) {
+      return differenceInMilliseconds(startOfMinute(setMinutes(new Date(), 30)), new Date());
+    }
+    return 900000; // 15 minutes
+  }
+
   setTimeout = () => {
     this.clearTimeout();
     this.setState({ loading: 0 }, () => {
@@ -213,11 +242,12 @@ class Board extends React.PureComponent {
             } else {
               this.changeIssue(this.getIssue(ARROWDOWN));
             }
+            this.setTimeout();
           } else {
-            this.setState(prevState => ({ loading: prevState.loading + 1 }));
+            this.setState((prevState) => ({ loading: prevState.loading + 1 }));
           }
         }, 100);
-      }, (900000 / this.getNumberOfIssues()) - 10000);
+      }, (this.getTimeLeft() / this.getNumberOfIssuesLeft()) - 10000);
     });
   }
 

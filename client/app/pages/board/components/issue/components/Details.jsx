@@ -10,11 +10,11 @@ import nobody from 'images/nobody.jpg';
 
 
 const mapLabels = (issue) => {
-  return issue.labels.map(l => <Badge color="darkgrey" className="u--marginRight1" key={`label-${issue.id}-${l}`} value={l} wide />);
+  return issue.labels.map((l) => <Badge color="darkgrey" className="u--marginRight1" key={`label-${issue.id}-${l}`} value={l} wide />);
 };
 
 const mapFixVersions = (issue) => {
-  return issue.unReleasedFixVersions.map(v => <Badge color="darkgrey" className="u--marginRight1" key={`label-${issue.id}-${v}`} value={v} wide />);
+  return issue.unReleasedFixVersions.map((v) => <Badge color="darkgrey" className="u--marginRight1" key={`label-${issue.id}-${v}`} value={v} wide />);
 };
 
 const mapReleasedFixVersions = (issue, overview) => {
