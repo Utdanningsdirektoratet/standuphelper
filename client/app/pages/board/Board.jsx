@@ -4,7 +4,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
-import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE, S } from 'utils/constants';
+import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE, S, P } from 'utils/constants';
 import { animateScroll, scroller } from 'react-scroll';
 import LoadingBar from 'react-top-loading-bar';
 import getHours from 'date-fns/getHours';
@@ -15,21 +15,27 @@ import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 
 import Phase from './components/Phase';
 import Shame from './components/Shame';
+import Praise from './components/Praise';
 
 const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 
 class Board extends React.PureComponent {
-  state = {
-    phase: MERGE,
-    issueIndex: 0,
-    overview: true,
-    loading: 0,
-    shame: false
-  };
+  constructor() {
+    super();
 
-  timeout = null;
+    this.state = {
+      phase: MERGE,
+      issueIndex: 0,
+      overview: true,
+      loading: 0,
+      shame: false,
+      praise: false
+    };
 
-  interval = null;
+    this.timeout = null;
+    this.interval = null;
+  }
+
 
   componentDidMount() {
     document.title = 'Staaaaaandup!';
@@ -77,6 +83,14 @@ class Board extends React.PureComponent {
         this.setState({ shame: true }, () => {
           setTimeout(() => {
             this.setState({ shame: false });
+          }, 1000);
+        });
+      } else if (keyPressed === P) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.setState({ praise: true }, () => {
+          setTimeout(() => {
+            this.setState({ praise: false });
           }, 1000);
         });
       } else {
@@ -268,7 +282,7 @@ class Board extends React.PureComponent {
     return (
       <div className={boardClass}>
         <LoadingBar
-          height={this.state.loading > 0 ? 5 : 0}
+          height={10}
           progress={this.state.loading}
         />
         {this.state.overview ? (
@@ -305,6 +319,7 @@ class Board extends React.PureComponent {
               issueIndex={this.state.issueIndex}
             />
             <Shame animate={this.state.shame} />
+            <Praise animate={this.state.praise} />
           </>
         )}
       </div>

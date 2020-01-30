@@ -7,8 +7,12 @@ import { phase as phasePropType } from 'proptypes';
 import Issue from './issue';
 
 class Phase extends React.PureComponent {
-  state = {
-    time: '00:00:00'
+  constructor() {
+    super();
+
+    this.state = {
+      time: '00:00:00'
+    };
   }
 
   componentDidMount() {

@@ -26,11 +26,10 @@ const getTitle = (overview, issue) => {
 };
 
 const getDescription = (description) => {
-  return ellipsize(DOMPurify.sanitize(j2m.jira_to_html(description))
+  return DOMPurify.sanitize(j2m.jira_to_html(description))
     .replace(/^<p>(\s?<br>\s?)+/ig, '<p>')
     .replace(/(\s?<br>\s?)+<\/p>$/ig, '</p>')
-    .replace(/<br>(\s?<br>\s?)+/ig, '<br><br>'),
-  256);
+    .replace(/<br>(\s?<br>\s?)+/ig, '<br><br>');
 };
 
 const Details = ({ issue, overview }) => {

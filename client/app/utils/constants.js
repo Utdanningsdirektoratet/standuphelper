@@ -12,3 +12,4 @@ export const SPACE = 32;
 export const RETURN = 13;
 export const ESCAPE = 27;
 export const S = 83;
+export const P = 80;

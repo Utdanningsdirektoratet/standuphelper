@@ -6,36 +6,52 @@
   padding: 6rem 4rem 2rem;
   height: 100vh;
 
+  --bg-color: @lightgrey;
+
   &:last-of-type {
     margin-bottom: 0;
   }
 
   &--yellow {
     background: @yellow;
+
+    --bg-color: @yellow;
   }
 
   &--red {
     background: @red;
+
+    --bg-color: @red;
   }
 
   &--green {
     background: @green;
+
+    --bg-color: @green;
   }
 
   &--blue {
     background: @blue;
+
+    --bg-color: @blue;
   }
 
   &--white {
     background: @white;
+
+    --bg-color: @white;
   }
 
   &--grey {
     background: @grey;
+
+    --bg-color: @grey;
   }
 
   &--offwhite {
     background: @offwhite;
+
+    --bg-color: @offwhite;
   }
 
   &--overview {
@@ -90,7 +106,15 @@
     font-size: 2rem;
     word-break: break-word;
     overflow: hidden;
-    max-height: 32rem;
+    height: 30rem;
+    background:
+      linear-gradient(var(--bg-color) 30%, rgba(255, 255, 255, 0)),
+      linear-gradient(rgba(255, 255, 255, 0), var(--bg-color) 70%) 0 100%,
+      radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
+      radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 2rem, 100% 2rem, 100% 1rem, 100% 1rem;
+    background-attachment: local, local, scroll, scroll;
   }
 
   &-footer {
