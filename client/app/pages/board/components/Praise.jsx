@@ -8,7 +8,9 @@ const Praise = ({ animate }) => {
   const praiseClass = classnames({
     'Praise': true,
     'Praise--show': animate,
-    'animated': true
+    'animate__animated': true,
+    'animate__fadeId': animate,
+    'animate__heartBeat': animate
   });
 
   return <span role="img" aria-label="Praise" className={praiseClass}>🙌</span>;

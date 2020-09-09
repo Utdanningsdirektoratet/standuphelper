@@ -8,8 +8,9 @@ const Shame = ({ animate }) => {
   const shameClass = classnames({
     'Shame': true,
     'Shame--show': animate,
-    'animated': true,
-    'tada': animate
+    'animate__animated': true,
+    'animate__tada': animate,
+    'animate__fadeIn': animate
   });
 
   return <div className={shameClass}>SHAME</div>;
