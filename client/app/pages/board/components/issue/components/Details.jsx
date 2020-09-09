@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { issue as issuePropType } from 'proptypes';
-import Badge, { Position as BadgePosition } from '@udir/udir-react-components/Badge';
+import Badge, { Position as BadgePosition } from '@udir/badge';
 import DOMPurify from 'dompurify';
 import j2m from 'jira2md';
 import ellipsize from 'ellipsize';
 
 import nobody from 'images/nobody.jpg';
-
 
 const mapLabels = (issue) => {
   return issue.labels.map((l) => <Badge color="darkgrey" className="u--marginRight1" key={`label-${issue.id}-${l}`} value={l} wide />);

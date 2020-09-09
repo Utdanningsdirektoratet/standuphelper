@@ -36,7 +36,6 @@ class Board extends React.PureComponent {
     this.interval = null;
   }
 
-
   componentDidMount() {
     document.title = 'Staaaaaandup!';
     window.addEventListener('keydown', this.onKeydown);
@@ -94,7 +93,7 @@ class Board extends React.PureComponent {
           }, 1000);
         });
       } else {
-        this.setTimeout();
+        // this.setTimeout();
       }
     }
   }
@@ -228,7 +227,7 @@ class Board extends React.PureComponent {
           duration: 0
         });
       } else {
-        this.setTimeout();
+        // this.setTimeout();
         scroller.scrollTo(`${this.state.phase}-${this.state.issueIndex}`, {
           smooth: false,
           duration: 0
