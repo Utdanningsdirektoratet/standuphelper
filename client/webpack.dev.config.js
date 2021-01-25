@@ -1,4 +1,4 @@
-const ConfigBuilder = require('@udir/udir-webpack-config');
+const ConfigBuilder = require('@utdanningsdirektoratet/udir-webpack-config');
 
 module.exports = new ConfigBuilder()
   .withDev()

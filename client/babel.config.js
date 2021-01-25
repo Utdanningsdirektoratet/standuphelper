@@ -1,1 +1,1 @@
-module.exports = require('@udir/babel-config');
+module.exports = require('@utdanningsdirektoratet/babel-config');

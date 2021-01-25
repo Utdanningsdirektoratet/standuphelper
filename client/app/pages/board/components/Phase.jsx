@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { phase as phasePropType } from 'proptypes';
+import Grid from '@utdanningsdirektoratet/grid';
 import Issue from './issue';
 
 class Phase extends React.PureComponent {
@@ -63,12 +64,11 @@ class Phase extends React.PureComponent {
 
     const phaseClass = classnames({
       'Phase': true,
-      'Phase--overview': overview,
-      'Grid-3-12': overview
+      'Phase--overview': overview
     });
 
     return (
-      <div className={phaseClass}>
+      <Grid size={overview ? '3-12' : undefined} className={phaseClass}>
         {overview ? (
           <h1 className="Phase-title u-h1">{phase.title} ({phase.issues.length})</h1>
         ) : null }
@@ -81,7 +81,7 @@ class Phase extends React.PureComponent {
         <div className="Phase-issues">
           {this.mapIssues()}
         </div>
-      </div>
+      </Grid>
     );
   }
 }

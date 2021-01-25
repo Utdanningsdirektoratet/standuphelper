@@ -30,7 +30,7 @@ namespace StandupHelper.Models.Response
             Title = issue.Fields.Summary;
             Assignee = issue.Fields.Assignee?.Name ?? "INGEN";
             Avatar = issue.Fields.Assignee?.AvatarUrls["48x48"];
-            Description = issue.Fields.Description?.Replace("\r\n", "<br/>").Replace("(/)", "✔").Replace("(x)", "✘").Replace("(i)", "ℹ️").Replace("(!)", "❗");
+            Description = issue.Fields.Description?.Replace("(/)", "✔").Replace("(x)", "✘").Replace("(i)", "ℹ️").Replace("(!)", "❗");
             Labels = issue.Fields.Labels;
             UnReleasedFixVersions = issue.Fields.FixVersions.Where(v => !v.Released).Select(v => v.Name).ToList();
             ReleasedFixVersions = issue.Fields.FixVersions.Count() - UnReleasedFixVersions.Count();
