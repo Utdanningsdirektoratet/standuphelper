@@ -3,7 +3,7 @@ const ConfigBuilder = require('@utdanningsdirektoratet/udir-webpack-config');
 
 module.exports = new ConfigBuilder()
   .withProd()
-  .withEntry({ filename: '../../Views/App/Index.cshtml' })
+  .withEntry({ filename: '../Views/App/Index.cshtml' })
   .withConfig({
     output: {
       publicPath: '/dist/',
