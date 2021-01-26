@@ -10,4 +10,20 @@ module.exports = new ConfigBuilder()
       path: path.join(__dirname, '../wwwroot/dist')
     }
   })
+  .withConfig({
+    module: {
+      rules: [
+        {
+          test: /node_modules(\/|\\)vfile(\/|\\)core\.js/,
+          use: [{
+            loader: 'imports-loader',
+            options: {
+              type: 'commonjs',
+              imports: ['single process/browser process']
+            }
+          }]
+        }
+      ]
+    }
+  })
   .build();
