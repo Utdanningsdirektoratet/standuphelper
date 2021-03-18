@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import App from 'App';
 import configureStore from 'configureStore';
 
-const store = configureStore(window.initialState);
+const store = configureStore();
 
 render(
   <Provider store={store}>

@@ -4,11 +4,11 @@
     <title>Laster&hellip;</title>
     <meta charset="utf-8"/>
     <link rel="icon" href="/favicon.ico" type="image/x-icon"  />
-  <link href="http://localhost:1337/static/main.css" rel="stylesheet"></head>
+  <link href="http://localhost:1337/static/vendors.css" rel="stylesheet"><link href="http://localhost:1337/static/main.css" rel="stylesheet"></head>
   <body>
     <div id="app"></div>
     <script>
-      var initialState = @Html.Raw(Model.ToString());
+      var url = "@Url.Action("Get")";
     </script>
-  <script src="http://localhost:1337/static/main.js"></script></body>
+  <script src="http://localhost:1337/static/runtime.js"></script><script src="http://localhost:1337/static/vendors.js"></script><script src="http://localhost:1337/static/main.js"></script></body>
 </html>

@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Net.Http.Formatting;
 using StandupHelper.Config;
 using StandupHelper.Utils;
 using System.Net.Http;
@@ -26,10 +23,16 @@ namespace StandupHelper.Controllers
             _logger = logger;
             _jiraConfig = jiraConfig;
         }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {            
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> Get()
         {            
             var board = await GetBoard();
-            return View(new PreloadViewModel(board));
+            return new JsonResult(new PreloadViewModel(board));
         }
 
         private async Task<BoardResponseModel> GetBoard()

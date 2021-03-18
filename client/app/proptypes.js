@@ -20,8 +20,8 @@ export const phase = PropTypes.shape({
 });
 
 export const board = PropTypes.shape({
-  inProgress: phase.isRequired,
-  merge: phase.isRequired,
-  peerReview: phase.isRequired,
-  test: phase.isRequired
+  inProgress: phase,
+  merge: phase,
+  peerReview: phase,
+  test: phase
 });

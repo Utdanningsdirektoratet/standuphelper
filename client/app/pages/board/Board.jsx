@@ -278,6 +278,8 @@ class Board extends React.PureComponent {
       'Board--overview': this.state.overview
     });
 
+    if (!board.loaded) return <div>Laster...</div>;
+
     return (
       <div className={boardClass}>
         <LoadingBar

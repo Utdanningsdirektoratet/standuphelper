@@ -39,7 +39,8 @@ namespace StandupHelper
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=App}/{action=Index}/{id?}"
+                    template: "{controller}/{action}",
+                    new { controller = "App", action = "Index" }
                 );
                 routes.MapSpaFallbackRoute(
                     name: "spa-fallback",
