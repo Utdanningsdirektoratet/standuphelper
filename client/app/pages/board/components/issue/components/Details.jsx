@@ -4,6 +4,8 @@ import { issue as issuePropType } from 'proptypes';
 import Badge from '@utdanningsdirektoratet/badge';
 import { Converter } from 'jira2markdown';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
 import ellipsize from 'ellipsize';
 
 import nobody from 'images/nobody.jpg';
@@ -48,7 +50,7 @@ const Details = ({ issue, overview }) => {
           <>
             <div className="Issue-description">
               {issue.description ? (
-                <ReactMarkdown allowDangerousHtml>{ j2m.toMarkdown(issue.description)}</ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw, rehypeSanitize]}>{j2m.toMarkdown(issue.description)}</ReactMarkdown>
               ) : null}
             </div>
             <div className="Issue-footer">
