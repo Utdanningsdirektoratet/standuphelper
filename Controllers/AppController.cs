@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -43,6 +45,31 @@ namespace StandupHelper.Controllers
                 var peerReview = await GetColumn(client, "Peer Review");
                 var test = await GetColumn(client, "System Test");
                 var merge = await GetMergeColumn(client);
+
+                // Trollface
+                if (_jiraConfig.Value.PrankIssue != null && _jiraConfig.Value.PrankIssue.Trim() != "")
+                {
+                    var issue = await GetIssue(client, _jiraConfig.Value.PrankIssue);
+                    if (issue != null)
+                    {
+                        switch (_jiraConfig.Value.PrankIssueColumn)
+                        {
+                            case "Merge":
+                                merge.Issues = merge.Issues.Append(issue);
+                                break;
+                            case "Peer Review":
+                                peerReview.Issues = peerReview.Issues.Append(issue);
+                                break;
+                            case "System Test":
+                                test.Issues = test.Issues.Append(issue);
+                                break;
+                            default:
+                                inProgress.Issues = inProgress.Issues.Append(issue);
+                                break;
+                        }
+                    }
+                }
+
                 return new BoardResponseModel
                 {
                     InProgress = inProgress,
@@ -58,6 +85,13 @@ namespace StandupHelper.Controllers
             var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='{column}'");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
             return ColumnResponseModel.ForColumn(columnModel, column);
+        }
+
+        private async Task<IssueResponseModel> GetIssue(HttpClient client, string issue)
+        {
+            var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=Issue={issue}");
+            var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
+            return columnModel.Issues?.Select(i => new IssueResponseModel(i)).FirstOrDefault();
         }
 
         private async Task<ColumnResponseModel> GetMergeColumn(HttpClient client)
