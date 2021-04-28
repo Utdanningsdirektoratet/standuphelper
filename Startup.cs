@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StandupHelper.Config;
@@ -26,7 +25,7 @@ namespace StandupHelper
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
             if (Configuration["DetailedErrors"] == "true")
             {
@@ -34,18 +33,15 @@ namespace StandupHelper
             }
 
             app.UseStaticFiles();    
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action}",
-                    new { controller = "App", action = "Index" }
-                );
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "App", action = "Index" }
-                );
+                endpoints.MapControllerRoute(
+                    "default",
+                    "{controller=App}/{action=Index}");
+
+                endpoints.MapFallbackToController("Index", "App");
             });
         }
     }
