@@ -12,6 +12,9 @@ bin/
 *.crunchsolution.cache
 nCrunchTemp*
 
+Helpers.Publish/
+*.zip
+
 **/Properties/launchSettings.json
 Properties/*
 

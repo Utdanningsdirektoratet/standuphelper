@@ -1,0 +1,172 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+      "type": "string"
+    },
+    "webAppConfig": {
+        "type": "object",
+        "metadata": {
+            "description": "Settings for the web app. Provide to override default"
+        },
+        "defaultValue": {}
+    },
+    "baseDeploymentName": {
+      "type": "string"
+    },
+    "containerSasToken": {
+      "type": "string",
+      "metadata": {
+        "description": "SAS token query string"
+      }
+    },
+    "templateFeed": {
+      "type": "string",
+      "metadata": {
+        "description": "Url to the linked template container"
+      }
+    }
+  },
+  "variables": {
+    "webAppDeploymentName": "[udir.deploymentName(parameters('baseDeploymentName'), 'app')]",
+    "webAppDeployTemplate": "[udir.templateUri(parameters('templateFeed'), parameters('containerSasToken'), 'webapp/completeApp', '3.2.0')]",
+    "appServicePlanResourceGroupName": "TestServicePlansRG",
+    "appServicePlanName": "Test-BetaWindowsSP",
+    "storageAccountName": "[take(concat('helpers', uniqueString(resourceGroup().name)), 24)]",
+    "storageDeploymentName": "[udir.deploymentName(parameters('baseDeploymentName'), 'mainStorage')]",
+    "storageAccountTemplate": "[udir.templateUri(parameters('templateFeed'), parameters('containerSasToken'), 'storage/simplestorageaccount', '2.0.0')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "[variables('webAppDeploymentName')]",
+      "resourceGroup": "[resourceGroup().name]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('webAppDeployTemplate')]"
+        },
+        "parameters": {
+          "baseDeploymentName": {
+            "value": "[variables('webAppDeploymentName')]"
+          },
+          "templateFeed": {
+            "value": "[parameters('templateFeed')]"
+          },
+          "containerSasToken": {
+            "value": "[parameters('containerSasToken')]"
+          },
+          "webAppName": {
+            "value": "[parameters('webAppName')]"
+          },
+          "webAppConfig": {
+            "value": "[parameters('webAppConfig')]"
+          },          
+          "appServicePlanResourceGroupName": {
+            "value": "[variables('appServicePlanResourceGroupName')]"
+          },
+          "appServicePlanName": {
+            "value": "[variables('appServicePlanName')]"
+          },
+          "assignSystemAssignedIdentity": {
+            "value": false
+          },
+          "udirTechDnsOverride": {
+            "value": "helpers"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "name": "[variables('storageDeploymentName')]",
+      "apiVersion": "2017-05-10",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('storageAccountTemplate')]"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('storageAccountName')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "webAppName": {
+      "type": "string",
+      "value": "[parameters('webAppName')]"
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]"
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "value": "[variables('appServicePlanName')]"
+    },
+    "appServicePlanResourceGroupName": {
+      "type": "string",
+      "value": "[variables('appServicePlanResourceGroupName')]"
+    },
+    "subscriptionId": {
+      "type": "string",
+      "value": "[subscription().subscriptionId]"
+    },
+    "storageAccountName": {
+      "type": "string",
+      "value": "[variables('storageAccountName')]"
+    }
+  },
+  "functions": [
+    {
+      "namespace": "udir",
+      "members": {
+        "deploymentName": {
+          "parameters": [
+            {
+              "name": "baseDeploymentName",
+              "type": "string"
+            },
+            {
+              "name": "suffix",
+              "type": "string"
+            }
+          ],
+          "output": {
+            "type": "string",
+            "value": "[concat(parameters('baseDeploymentName'), '-', parameters('suffix'))]"
+          }
+        },
+        "templateUri": {
+          "parameters": [
+            {
+              "name": "templateFeed",
+              "type": "string"
+            },
+            {
+              "name": "containerSasToken",
+              "type": "string"
+            },
+            {
+              "name": "templatePath",
+              "type": "string"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            }
+          ],
+          "output": {
+            "type": "string",
+            "value": "[concat(parameters('templateFeed'), '/', parameters('templatePath'), '/', parameters('version'), '/template.json', parameters('containerSasToken'))]"
+          }
+        }
+      }
+    }
+  ]  
+}
