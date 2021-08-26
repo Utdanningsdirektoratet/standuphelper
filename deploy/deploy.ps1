@@ -1,6 +1,6 @@
 param (
   [Parameter(Mandatory = $true)]
-  [string]$JiraPassowrd,
+  [string]$JiraPwd,
   [switch] $skipNpmInstall
 )
 
@@ -92,7 +92,7 @@ try {
   $appSettings = Get-WebAppSettings -Name $webAppName -ResourceGroupName $ResourceGroupName
   $appSettings['IdentityProvider__Authority'] = "https://test-hflsso.udir.tech"
   $appSettings['Jira__Username'] = "hfl-hss"
-  $appSettings['Jira__Password'] = "$JiraPassowrd"
+  $appSettings['Jira__Password'] = "$JiraPwd"
   $appSettings['Jira__MergeColumnFilter'] = "status='Done' AND (fixVersion in unreleasedVersions() OR (fixVersion in releasedVersions() AND status != Done) OR (fixVersion is EMPTY AND 'Resolution Cause' is EMPTY)) AND issuetype != 'Epic'"
 
   Write-Host "==> Setting client id and secret for SSO"

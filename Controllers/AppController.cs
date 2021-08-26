@@ -31,20 +31,24 @@ namespace StandupHelper.Controllers
         }
 
         [HttpGet]
-        public async Task<JsonResult> Get()
+        public async Task<JsonResult> Get([FromQuery]string team = null)
         {            
-            var board = await GetBoard();
+            var board = await GetBoard(team?.ToLowerInvariant());
             return new JsonResult(new PreloadViewModel(board));
         }
 
-        private async Task<BoardResponseModel> GetBoard()
+        private async Task<BoardResponseModel> GetBoard(string team = null)
         {
             using(var client = _httpClientUtils.GetClient())
             {
-                var inProgress = await GetColumn(client, "In Progress");
-                var peerReview = await GetColumn(client, "Peer Review");
-                var test = await GetColumn(client, "System Test");
-                var merge = await GetMergeColumn(client);
+                var teamNames = team != null && _jiraConfig.Value.TeamFilters.ContainsKey(team)
+                    ? _jiraConfig.Value.TeamFilters[team]
+                    : Array.Empty<string>();
+                    
+                var inProgress = await GetColumn(client, "In Progress", teamNames);
+                var peerReview = await GetColumn(client, "Peer Review", teamNames);
+                var test = await GetColumn(client, "System Test", teamNames);
+                var merge = await GetMergeColumn(client, teamNames);
 
                 // Trollface
                 if (_jiraConfig.Value.PrankIssue != null && _jiraConfig.Value.PrankIssue.Trim() != "")
@@ -80,11 +84,11 @@ namespace StandupHelper.Controllers
             }
         }
 
-        private async Task<ColumnResponseModel> GetColumn(HttpClient client, string column)
+        private async Task<ColumnResponseModel> GetColumn(HttpClient client, string column, string[] teamNames)
         {
             var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql=status='{column}'");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
-            return ColumnResponseModel.ForColumn(columnModel, column);
+            return ColumnResponseModel.ForColumn(columnModel, column, teamNames);
         }
 
         private async Task<IssueResponseModel> GetIssue(HttpClient client, string issue)
@@ -94,11 +98,11 @@ namespace StandupHelper.Controllers
             return columnModel.Issues?.Select(i => new IssueResponseModel(i)).FirstOrDefault();
         }
 
-        private async Task<ColumnResponseModel> GetMergeColumn(HttpClient client)
+        private async Task<ColumnResponseModel> GetMergeColumn(HttpClient client, string[] teamNames)
         {
             var response = await client.GetAsync($"https://jira.udir.no/rest/agile/1.0/board/145/issue?jql={_jiraConfig.Value.MergeColumnFilter}");
             var columnModel = await response.Content.ReadAsAsync<ColumnModel>();
-            return ColumnResponseModel.ForMerge(columnModel);
+            return ColumnResponseModel.ForMerge(columnModel, teamNames);
         }
     }
 }
