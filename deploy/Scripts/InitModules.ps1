@@ -21,7 +21,7 @@ function Install-IfNotInstalled {
   }
 
   if ($null -eq (Get-Module $ModuleName -ListAvailable | Where-Object { $_.Version -eq $moduleMaxVersion })) {
-    Write-Jost "==> Installing module $ModuleName version $moduleMaxVersion"
+    Write-Host "==> Installing module $ModuleName version $moduleMaxVersion"
     Install-Module $ModuleName -RequiredVersion $moduleMaxVersion -Force
   }
   else {
