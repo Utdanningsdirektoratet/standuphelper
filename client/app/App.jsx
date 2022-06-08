@@ -1,10 +1,8 @@
 import 'less/base';
 
-import React from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { hot } from 'react-hot-loader/root';
-import RouteContainer from 'RouteContainer';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import useSWR from 'swr';
 import Board, { LOAD_STORIES } from 'pages/board';
 
@@ -14,18 +12,18 @@ const App = () => {
   const dispatch = useDispatch();
   const { data } = useSWR(`${window.url}${window.location.search}`, fetcher, { refreshInterval: 10000 });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) dispatch({ type: LOAD_STORIES, payload: data });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return (
-    <Router>
-      <RouteContainer>
-        <Route path="/" component={Board} />
-      </RouteContainer>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Board />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
-export default hot(App);
+export default App;

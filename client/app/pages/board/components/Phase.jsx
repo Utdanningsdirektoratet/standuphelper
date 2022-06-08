@@ -1,13 +1,13 @@
 import 'less/phase.less';
 
-import React from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { phase as phasePropType } from 'proptypes';
 import Grid from '@utdanningsdirektoratet/grid';
 import Issue from './issue';
 
-class Phase extends React.PureComponent {
+class Phase extends PureComponent {
   constructor() {
     super();
 

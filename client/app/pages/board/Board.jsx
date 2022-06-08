@@ -1,17 +1,11 @@
 import 'less/board';
 
-import React from 'react';
+import { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { board as boardPropType } from 'proptypes';
 import { INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE, ARROWLEFT, ARROWRIGHT, RETURN, ARROWUP, ARROWDOWN, SPACE, ESCAPE, S, P } from 'utils/constants';
 import { animateScroll, scroller } from 'react-scroll';
-import LoadingBar from 'react-top-loading-bar';
-import getHours from 'date-fns/getHours';
-import getMinutes from 'date-fns/getMinutes';
-import setMinutes from 'date-fns/setMinutes';
-import startOfMinute from 'date-fns/startOfMinute';
-import differenceInMilliseconds from 'date-fns/differenceInMilliseconds';
 
 import Phase from './components/Phase';
 import Shame from './components/Shame';
@@ -19,7 +13,7 @@ import Praise from './components/Praise';
 
 const phaseOrder = [INPROGRESS, PEERREVIEW, SYSTEMTEST, MERGE];
 
-class Board extends React.PureComponent {
+class Board extends PureComponent {
   constructor() {
     super();
 
@@ -27,13 +21,11 @@ class Board extends React.PureComponent {
       phase: MERGE,
       issueIndex: 0,
       overview: true,
-      loading: 0,
       shame: false,
       praise: false
     };
 
     this.timeout = null;
-    this.interval = null;
   }
 
   componentDidMount() {
@@ -171,10 +163,6 @@ class Board extends React.PureComponent {
     }
   }
 
-  getNumberOfIssuesLeft = () => {
-    return this.getNumberOfIssues(this.state.phase) - this.state.issueIndex;
-  }
-
   getNumberOfIssues = (phase) => {
     const { board } = this.props;
 
@@ -219,9 +207,8 @@ class Board extends React.PureComponent {
   }
 
   toggleOverview = () => {
-    this.setState((prevState) => ({ overview: !prevState.overview, loading: 0 }), () => {
+    this.setState((prevState) => ({ overview: !prevState.overview }), () => {
       if (this.state.overview) {
-        this.clearTimeout();
         animateScroll.scrollToTop({
           smooth: false,
           duration: 0
@@ -234,39 +221,6 @@ class Board extends React.PureComponent {
         });
       }
     });
-  }
-
-  getTimeLeft = () => {
-    // Between 11:15 and 11:30
-    if (getHours(new Date()) === 11 && getMinutes(new Date()) >= 15 && getMinutes(new Date()) < 30) {
-      return differenceInMilliseconds(startOfMinute(setMinutes(new Date(), 30)), new Date());
-    }
-    return 900000; // 15 minutes
-  }
-
-  setTimeout = () => {
-    this.clearTimeout();
-    this.setState({ loading: 0 }, () => {
-      this.timeout = setTimeout(() => {
-        this.interval = setInterval(() => {
-          if (this.state.loading > 100) {
-            if (this.isLastIssue()) {
-              this.toggleOverview();
-            } else {
-              this.changeIssue(this.getIssue(ARROWDOWN));
-            }
-            this.setTimeout();
-          } else {
-            this.setState((prevState) => ({ loading: prevState.loading + 1 }));
-          }
-        }, 100);
-      }, (this.getTimeLeft() / this.getNumberOfIssuesLeft()) - 10000);
-    });
-  }
-
-  clearTimeout = () => {
-    clearTimeout(this.timeout);
-    clearInterval(this.interval);
   }
 
   render() {
@@ -282,10 +236,6 @@ class Board extends React.PureComponent {
 
     return (
       <div className={boardClass}>
-        <LoadingBar
-          height={10}
-          progress={this.state.loading}
-        />
         {this.state.overview ? (
           <>
             <Phase phase={board.inProgress} phaseName={INPROGRESS} overview />

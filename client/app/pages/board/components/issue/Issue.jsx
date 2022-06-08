@@ -1,6 +1,5 @@
 import 'less/issue.less';
 
-import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { issue as issuePropType } from 'proptypes';

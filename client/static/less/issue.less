@@ -1,57 +1,57 @@
-@import (reference) "~@utdanningsdirektoratet/styles/constants";
+@import (reference) "@utdanningsdirektoratet/styles/constants";
 
 .Issue {
-  background: @lightgrey;
+  background: var(--lightgrey);
   position: relative;
   padding: 6rem 4rem 2rem;
   height: 100vh;
 
-  --bg-color: @lightgrey;
+  --bg-color: var(--lightgrey);
 
   &:last-of-type {
     margin-bottom: 0;
   }
 
   &--yellow {
-    background: @yellow;
+    background: var(--eggshell5);
 
-    --bg-color: @yellow;
+    --bg-color: var(--eggshell5);
   }
 
   &--red {
-    background: @red;
+    background: var(--peach5);
 
-    --bg-color: @red;
+    --bg-color: var(--peach5);
   }
 
   &--green {
-    background: @green;
+    background: var(--green5);
 
-    --bg-color: @green;
+    --bg-color: var(--green5);
   }
 
   &--blue {
-    background: @blue;
+    background: var(--slate5);
 
-    --bg-color: @blue;
+    --bg-color: var(--slate5);
   }
 
   &--white {
-    background: @white;
+    background: var(--white);
 
-    --bg-color: @white;
+    --bg-color: var(--white);
   }
 
   &--grey {
-    background: @grey;
+    background: var(--bordergrey);
 
-    --bg-color: @grey;
+    --bg-color: var(--bordergrey);
   }
 
   &--offwhite {
-    background: @offwhite;
+    background: var(--offwhite);
 
-    --bg-color: @offwhite;
+    --bg-color: var(--offwhite);
   }
 
   &--overview {
@@ -68,7 +68,7 @@
   }
 
   &-title {
-    border-bottom: 0.125rem solid @black;
+    border-bottom: 0.125rem solid var(--black);
 
     &-content {
       display: inline-block;
@@ -108,10 +108,10 @@
     height: 30rem;
     width: 100%;
     background:
-      linear-gradient(var(--bg-color) 30%, rgba(255, 255, 255, 0)),
-      linear-gradient(rgba(255, 255, 255, 0), var(--bg-color) 70%) 0 100%,
-      radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)),
-      radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0)) 0 100%;
+      linear-gradient(var(--bg-color) 30%, rgb(255 255 255 / 0)),
+      linear-gradient(rgb(255 255 255 / 0), var(--bg-color) 70%) 0 100%,
+      radial-gradient(farthest-side at 50% 0, rgb(0 0 0 / 0.2), rgb(0 0 0 / 0)),
+      radial-gradient(farthest-side at 50% 100%, rgb(0 0 0 / 0.2), rgb(0 0 0 / 0)) 0 100%;
     background-repeat: no-repeat;
     background-size: 100% 2rem, 100% 2rem, 100% 1rem, 100% 1rem;
     background-attachment: local, local, scroll, scroll;

@@ -1,34 +1,23 @@
-obj/
-bin/
 
-# User-specific files
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-*.user
-*.ncrunchproject
-*.ncrunchsolution
-*.crunchsolution.cache
-nCrunchTemp*
-
-Helpers.Publish/
-*.zip
-
-**/Properties/launchSettings.json
-Properties/*
-
-# Visual Studio Code
-.vscode
-
-# Visual Studio
 .vs/
+.vscode/
+.idea/
+dist/
+.history/
+.DS_Store
+*.code-workspace
 
-publish/
-*.nupkg
+*.deb
+debug.log
 
-# web
-node_modules
-dist
-npm-debug.log
-.config
+node_modules/
+bin/
+obj/
+
+
+*.code-workspace
+StandupHelper.sln.DotSettings.user
+*.ncrunchsolution.user
+*.csproj.user
+
+junit.xml

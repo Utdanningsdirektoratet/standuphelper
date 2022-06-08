@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { issue as issuePropType } from 'proptypes';
 import Badge from '@utdanningsdirektoratet/badge';
